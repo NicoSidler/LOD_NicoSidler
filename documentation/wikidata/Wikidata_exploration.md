@@ -266,7 +266,7 @@ WHERE
 
 ### Outgoing
 
-Cf. [on this page](./Wikidata-liste-proprietes-population.md) the list of properties resulting from this query.
+Cf. [on this page](https://github.com/NicoSidler/python_best_practices/blob/40979b35ceaac57c1d47271af61e4fe3f45cd404/documentation/wikidata/wikidata_propertylist.csv)) the list of properties resulting from this query.
 
 ```
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
