@@ -43,16 +43,16 @@ To begin with, we select a few people from the population chosen for the researc
 
 ## Querying Wikidata to find the population
 
-For astronomers and physicists, the following properties appear to be an effective way of identifying the population::
+For sociologists, the following properties appear to be an effective way of identifying the population::
 
 * [occupation](https://m.wikidata.org/wiki/Property:P106)
 * [field of work](https://m.wikidata.org/wiki/Property:P101)
 
-### Number of persons with 'occupation' et/ou 'field of work' in astronomy and physics
+### Number of persons with 'occupation' et/ou 'field of work' in sociology
 
-Figures as of February 16, 2026.
+22174 as of March 03, 2026.
 
-```
+````sparql
 SELECT (COUNT(*) as ?eff)
 WHERE {
 
@@ -61,79 +61,33 @@ WHERE {
 
     ?item wdt:P31 wd:Q5;  # Any instance of a human.
   
-          wdt:P106 wd:Q11063  # astronomer 11750
-  
-    # wdt:P101 wd:Q333  # astronomy 2161
-    # wdt:P106 wd:Q169470 # physicist 36002
-    #  wdt:P101 wd:Q413 # physics ~ 5625
+          wdt:P106 wd:Q2306091  # sociologist
 
-    ### autres sujets
-    #  wdt:P106 wd:Q155647  # astrologer 1364
-    #  wdt:P101 wd:Q34362 # astrology 241
-    #  wdt:P106 wd:Q170790  # mathematician 39562
-    #  wdt:P106 wd:Q901 # scientist 36117
-
-}  
-```
+}
 
 ### Combine 'occupation' with 'field of work'
 
 We use here the **UNION** clause which allows to express an **OR** condition and merge two populations.
 
-#### Astronomers
+#### Sociologists (occupation OR field of work)
 
-14327 as of February 16, 2026.
+22195 as of March 03, 2026.
 
 ```
 SELECT (COUNT(*) as ?eff)
 WHERE {
     ?item wdt:P31 wd:Q5.
-    {?item wdt:P106 wd:Q11063}
+    {?item wdt:P106 wd:Q2306091}
     UNION
-    {?item wdt:P101 wd:Q333}  
-}  
-```
-
-#### Physicians
-
-41629 as of February 16, 2026.
-
-```
-SELECT (COUNT(*) as ?eff)
-WHERE {
-    ?item wdt:P31 wd:Q5;  # Any instance of a human.
-    {?item wdt:P106 wd:Q169470}
-    UNION
-    {?item wdt:P101 wd:Q413}  
-}  
-```
-
-#### Both sup-populations
-
-55956 as of February 16, 2026.
-
-But be careful: it's actually the sum of the two, so a person could appear more then once.
-
-```
-SELECT (COUNT(*) as ?eff)
-WHERE {
-    ?item wdt:P31 wd:Q5;  # Any instance of a human.
-
-    {?item wdt:P106 wd:Q11063}
-    UNION
-    {?item wdt:P101 wd:Q333} 
-    UNION
-    {?item wdt:P106 wd:Q169470}
-    UNION
-    {?item wdt:P101 wd:Q413}  
+    {?item wdt:P101 wd:Q2306091}  
 }  
 ```
 
 ### Actual number of people
 
-48094 las of February 16, 2026.
+22190 las of February 16, 2026.
 
-There is an overlap of approximately 7,800 individuals who are both astronomers and physicists.
+There is an overlap of approximately 5 individuals.
 
 Please note that **SPARQL operates in a layered manner**: the innermost layer is executed first and the result set is then sent to the next layer up.
 
@@ -145,44 +99,38 @@ WHERE {
         SELECT DISTINCT ?item
         WHERE {
         ?item wdt:P31 wd:Q5;  # Any instance of a human.
-        {?item wdt:P106 wd:Q11063}
+        {?item wdt:P106 wd:Q2306091}
         UNION
-        {?item wdt:P101 wd:Q333} 
-        UNION
-        {?item wdt:P106 wd:Q169470}
-        UNION
-        {?item wdt:P101 wd:Q413}  
+        {?item wdt:P101 wd:Q2306091}  
         }
     }
-}  
+} 
 ```
 
 ### Add a filter on the birth year
 
-32866 on February 21st 2026
+8242 on 03 March, 2026
 
 ```
 SELECT (COUNT(*) as ?eff)
 WHERE
-    {
-    ### subquery adding the distinct clause
-        {
-        SELECT DISTINCT ?item
-        WHERE {
-        ?item wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?item wdt:P106 wd:Q11063}
-            UNION
-            {?item wdt:P101 wd:Q333} 
-            UNION
-            {?item wdt:P106 wd:Q169470}
-            UNION
-            {?item wdt:P101 wd:Q413}  
-            }
-        }  
-    }  
+{
+  ### subquery adding the distinct clause
+  {
+    SELECT DISTINCT ?item
+    WHERE {
+      ?item wdt:P31 wd:Q5;
+            wdt:P569 ?birthDate.
+
+      BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1950 && xsd:integer(?year) <= 1980)
+
+      {?item wdt:P106 wd:Q2306091}
+      UNION
+      {?item wdt:P101 wd:Q2306091}
+    }
+  }
+}
 ```
 
 ### Inspect individuals
@@ -192,91 +140,89 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT ?item ?itemLabel ?year
 WHERE {
-    {
-  
-        {?item wdt:P106 wd:Q11063}
-        UNION
-        {?item wdt:P101 wd:Q333} 
-        UNION
-        {?item wdt:P106 wd:Q169470}
-        UNION
-        {?item wdt:P101 wd:Q413} 
-    }  
-    ?item wdt:P31 wd:Q5;  # Any instance of a human.
-            wdt:P569 ?birthDate.
-  BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)
-  
-    ### Two ways of getting labels
-    # SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+  {
+    {?item wdt:P106 wd:Q2306091}
+    UNION
+    {?item wdt:P101 wd:Q2306091}
+  }
 
-    ## This is useful for query from external tool
-    ?item rdfs:label ?itemLabel.
-    FILTER(LANG(?itemLabel) = 'en')
-    }  
+  ?item wdt:P31 wd:Q5;
+        wdt:P569 ?birthDate.
+
+  BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+  FILTER(xsd:integer(?year) >= 1950 && xsd:integer(?year) <= 1980)
+
+  ### Two ways of getting labels
+  # SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+
+  ## This is useful for query from external tool
+  ?item rdfs:label ?itemLabel.
+  FILTER(LANG(?itemLabel) = 'en')
+}
 LIMIT 100
 ```
 
 ### Count population with English labels
 
+7911 individuals on 03 March, 2026
+
+
 ```
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (COUNT(*) as ?eff)
 WHERE
-    {
-    ### subquery adding the distinct clause
-        {
-        SELECT DISTINCT ?item ?itemLabel ?year
-        WHERE {
-        ?item wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?item wdt:P106 wd:Q11063}
-            UNION
-            {?item wdt:P101 wd:Q333} 
-            UNION
-            {?item wdt:P106 wd:Q169470}
-            UNION
-            {?item wdt:P101 wd:Q413}  
-        ?item rdfs:label ?itemLabel.
-        FILTER(LANG(?itemLabel) = 'en')
-            }
-        }  
-    }  
+{
+  ### subquery adding the distinct clause
+  {
+    SELECT DISTINCT ?item ?itemLabel ?year
+    WHERE {
+      ?item wdt:P31 wd:Q5;
+            wdt:P569 ?birthDate.
+
+      BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1950 && xsd:integer(?year) <= 1980)
+
+      {?item wdt:P106 wd:Q2306091}
+      UNION
+      {?item wdt:P101 wd:Q2306091}
+
+      ?item rdfs:label ?itemLabel.
+      FILTER(LANG(?itemLabel) = 'en')
+    }
+  }
+}
 ```
 
 ### Number of individuals without English label
-
+347 individuals on 03 March, 2026
 ```
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (COUNT(*) as ?eff)
 WHERE
-    {
-    ### sous requête qui ajoute la clause distinct
-        {
-        SELECT DISTINCT ?item ?itemLabel ?year
-        WHERE {
-        ?item wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?item wdt:P106 wd:Q11063}
-            UNION
-            {?item wdt:P101 wd:Q333} 
-            UNION
-            {?item wdt:P106 wd:Q169470}
-            UNION
-            {?item wdt:P101 wd:Q413}  
-        MINUS {?item rdfs:label ?itemLabel.
-            FILTER(LANG(?itemLabel) = 'en')
-            }
-            }
-        }  
-    }  
+{
+  {
+    SELECT DISTINCT ?item ?itemLabel ?year
+    WHERE {
+      ?item wdt:P31 wd:Q5;
+            wdt:P569 ?birthDate.
+
+      BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1950 && xsd:integer(?year) <= 1980)
+
+      {?item wdt:P106 wd:Q2306091}
+      UNION
+      {?item wdt:P101 wd:Q2306091}
+
+      MINUS {
+        ?item rdfs:label ?itemLabel.
+        FILTER(LANG(?itemLabel) = 'en')
+      }
+    }
+  }
+}
 ```
 
-### Individuals without English label
+### Individuals without English label (birth year 1950–1980, sociologists)
 
 Inspect individuals' cards and observe their properties
 
