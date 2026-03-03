@@ -52,7 +52,7 @@ For sociologists, the following properties appear to be an effective way of iden
 
 22174 as of March 03, 2026.
 
-```
+````
 SELECT (COUNT(*) as ?eff)
 WHERE {
 
@@ -65,6 +65,7 @@ WHERE {
 
 }
 
+````
 ### Combine 'occupation' with 'field of work'
 
 We use here the **UNION** clause which allows to express an **OR** condition and merge two populations.
@@ -73,7 +74,7 @@ We use here the **UNION** clause which allows to express an **OR** condition and
 
 22195 as of March 03, 2026.
 
-```
+````
 SELECT (COUNT(*) as ?eff)
 WHERE {
     ?item wdt:P31 wd:Q5.
@@ -81,7 +82,7 @@ WHERE {
     UNION
     {?item wdt:P101 wd:Q2306091}  
 }  
-```
+````
 
 ### Actual number of people
 
@@ -91,7 +92,7 @@ There is an overlap of approximately 5 individuals.
 
 Please note that **SPARQL operates in a layered manner**: the innermost layer is executed first and the result set is then sent to the next layer up.
 
-```
+````
 SELECT (COUNT(*) as ?eff)
 WHERE {
     ### subquery adding the distinct clause
@@ -105,13 +106,13 @@ WHERE {
         }
     }
 } 
-```
+````
 
 ### Add a filter on the birth year
 
 8242 on 03 March, 2026
 
-```
+````
 SELECT (COUNT(*) as ?eff)
 WHERE
 {
@@ -131,11 +132,11 @@ WHERE
     }
   }
 }
-```
+````
 
 ### Inspect individuals
 
-```
+````
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT ?item ?itemLabel ?year
@@ -160,14 +161,14 @@ WHERE {
   FILTER(LANG(?itemLabel) = 'en')
 }
 LIMIT 100
-```
+````
 
 ### Count population with English labels
 
 7911 individuals on 03 March, 2026
 
 
-```
+````
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (COUNT(*) as ?eff)
 WHERE
@@ -191,11 +192,10 @@ WHERE
     }
   }
 }
-```
-
+````
 ### Number of individuals without English label
 347 individuals on 03 March, 2026
-```
+````
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (COUNT(*) as ?eff)
 WHERE
@@ -220,13 +220,13 @@ WHERE
     }
   }
 }
-```
+````
 
 ### Individuals without English label (birth year 1950–1980, sociologists)
 
 Inspect individuals' cards and observe their properties
 
-```
+````
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
@@ -260,7 +260,7 @@ WHERE
 	   GROUP BY ?item ?year
 	   ORDER BY ?item
 	   LIMIT 100
-```
+````
 
 ## List the available properties and their numbers.
 
@@ -268,43 +268,43 @@ WHERE
 
 Cf. [on this page](https://github.com/NicoSidler/python_best_practices/blob/40979b35ceaac57c1d47271af61e4fe3f45cd404/documentation/wikidata/wikidata_propertylist.csv)) the list of properties resulting from this query.
 
-```
+````
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT ?p ?propLabel ?eff ('' as ?notes)
 WHERE {
-{
-    SELECT DISTINCT  ?p  (count(*) as ?eff)
+  {
+    SELECT DISTINCT ?p (count(*) as ?eff)
     WHERE {
-        ?item wdt:P31 wd:Q5; 
-             wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?item wdt:P106 wd:Q11063}
-            UNION
-            {?item wdt:P101 wd:Q333} 
-            UNION
-            {?item wdt:P106 wd:Q169470}
-            UNION
-            {?item wdt:P101 wd:Q413}.
-			?item ?p ?o.
-        }
-		GROUP BY ?p
+      ?item wdt:P31 wd:Q5; 
+            wdt:P569 ?birthDate.
+
+      BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1950 && xsd:integer(?year) <= 1980)
+
+      {?item wdt:P106 wd:Q2306091}
+      UNION
+      {?item wdt:P101 wd:Q2306091} .
+
+      ?item ?p ?o.
     }
+    GROUP BY ?p
+  }
 
-    ## we need this construct to get the label of the property
-    ## properties are also entities in Wikidata,
-    ## but only in the entities' namespace
+  ## we need this construct to get the label of the property
+  ## properties are also entities in Wikidata,
+  ## but only in the entities' namespace
 
-    ?prop wikibase:directClaim ?p .
-    ?prop rdfs:label ?propLabel.
-    FILTER(LANG(?propLabel) = 'en')
-    }  
+  ?prop wikibase:directClaim ?p .
+  ?prop rdfs:label ?propLabel.
+  FILTER(LANG(?propLabel) = 'en')
+}
 ORDER BY DESC(?eff) 
-```
+````
 
 **NB**. Please note that timeout issues may occur when executing the query on the Wikidata SPARQL endpoint. This is because the query takes too long to process and an error message appears.
 &nbsp;
