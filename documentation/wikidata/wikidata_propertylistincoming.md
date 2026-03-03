@@ -1,6 +1,6 @@
 | p                                          | propLabel                                   | eff  | notes |
 | ------------------------------------------ | ------------------------------------------- | ---- | ----- |
-| http://www.wikidata.org/prop/direct/P50g    | author                                      | 2878 |       |
+| http://www.wikidata.org/prop/direct/P50    | author                                      | 2878 |       |
 | http://www.wikidata.org/prop/direct/P184   | doctoral advisor                            | 899  |       |
 | http://www.wikidata.org/prop/direct/P185   | doctoral student                            | 735  |       |
 | http://www.wikidata.org/prop/direct/P1889  | different from                              | 283  |       |
