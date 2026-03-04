@@ -267,7 +267,7 @@ WHERE
 
 ### Outgoing
 
-On this page (Cf. [on this page] https://github.com/NicoSidler/python_best_practices/blob/d69892f850a6d5cafae25e5c1b6f4ae7896eaed2/documentation/wikidata/wikidata_porpertylistoutgoing.md) find the list of properties resulting from this query.
+On this page (Cf. [on this page] https://github.com/NicoSidler/LOD_NicoSidler/blob/d69666cd96e8d88ad825719610c76967c3b2973c/documentation/wikidata/PropertyListOutgoing.md) find the list of properties resulting from this query.
 
 ````
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
