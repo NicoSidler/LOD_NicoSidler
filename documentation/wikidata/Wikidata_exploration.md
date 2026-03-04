@@ -72,7 +72,7 @@ We use here the **UNION** clause which allows to express an **OR** condition and
 
 #### Sociologists (occupation OR field of work)
 
-22195 as of March 03, 2026.
+27752 as of March 03, 2026.
 
 ````
 SELECT (COUNT(*) as ?eff)
@@ -86,7 +86,7 @@ WHERE {
 
 ### Actual number of people
 
-22190 las of February 16, 2026.
+23244 las of March 03, 2026.
 
 There is an overlap of approximately 5 individuals.
 
@@ -110,7 +110,7 @@ WHERE {
 
 ### Add a filter on the birth year
 
-8242 on 03 March, 2026
+18995 on 03 March, 2026
 
 ````
 SELECT (COUNT(*) as ?eff)
