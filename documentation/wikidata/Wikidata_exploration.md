@@ -323,7 +323,7 @@ This list is then exported and transformed to a table in order to document the s
 In the column 'notes' of the property table you can add links to the pages where you document the treatement of the corresponding information.
 
 ### Incoming
-On this page (Cf. [on this page] https://github.com/NicoSidler/python_best_practices/blob/c61b28776264f4131ead6ffe859b2c0b23a2228c/documentation/wikidata/wikidata_propertylistincoming.md) find the list of properties resulting from this query.
+On this page (Cf. [on this page] https://github.com/NicoSidler/LOD_NicoSidler/blob/0a722e9342692e794309343b3cee21ca7df9a50c/documentation/wikidata/PropertyListIncoming.md) find the list of properties resulting from this query.
 
 ````
 ### Incoming (birth year 1950–1980, sociologists)
