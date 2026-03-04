@@ -289,7 +289,7 @@ WHERE {
 
       {?item wdt:P106 wd:Q2306091}
       UNION
-      {?item wdt:P101 wd:Q2306091} .
+      {?item wdt:P101 wd:Q2306091}
 
       ?item ?p ?o.
     }
@@ -347,7 +347,7 @@ WHERE {
 
       { ?item wdt:P106 wd:Q2306091 }
       UNION
-      { ?item wdt:P101 wd:Q2306091 } .
+      { ?item wdt:P101 wd:Q2306091 }
 
       ## inversed triple (incoming properties)
       ?s ?p ?item .
