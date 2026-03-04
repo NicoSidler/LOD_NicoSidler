@@ -80,7 +80,7 @@ WHERE {
     ?item wdt:P31 wd:Q5.
     {?item wdt:P106 wd:Q2306091}
     UNION
-    {?item wdt:P101 wd:Q2306091}  
+    {?item wdt:P101 wd:Q21201}  
 }  
 ````
 
@@ -102,7 +102,7 @@ WHERE {
         ?item wdt:P31 wd:Q5;  # Any instance of a human.
         {?item wdt:P106 wd:Q2306091}
         UNION
-        {?item wdt:P101 wd:Q2306091}  
+        {?item wdt:P101 wd:Q21201}  
         }
     }
 } 
@@ -128,7 +128,7 @@ WHERE
 
       {?item wdt:P106 wd:Q2306091}
       UNION
-      {?item wdt:P101 wd:Q2306091}
+      {?item wdt:P101 wd:Q21201}
     }
   }
 }
@@ -144,7 +144,7 @@ WHERE {
   {
     {?item wdt:P106 wd:Q2306091}
     UNION
-    {?item wdt:P101 wd:Q2306091}
+    {?item wdt:P101 wd:Q21201}
   }
 
   ?item wdt:P31 wd:Q5;
@@ -185,7 +185,7 @@ WHERE
 
       {?item wdt:P106 wd:Q2306091}
       UNION
-      {?item wdt:P101 wd:Q2306091}
+      {?item wdt:P101 wd:Q21201}
 
       ?item rdfs:label ?itemLabel.
       FILTER(LANG(?itemLabel) = 'en')
@@ -212,7 +212,7 @@ WHERE
 
       {?item wdt:P106 wd:Q2306091}
       UNION
-      {?item wdt:P101 wd:Q2306091}
+      {?item wdt:P101 wd:Q21201}
 
       MINUS {
         ?item rdfs:label ?itemLabel.
@@ -347,7 +347,7 @@ WHERE {
 
       { ?item wdt:P106 wd:Q2306091 }
       UNION
-      { ?item wdt:P101 wd:Q2306091 }
+      { ?item wdt:P101 wd:Q21201 }
 
       ## inversed triple (incoming properties)
       ?s ?p ?item .
