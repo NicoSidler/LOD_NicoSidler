@@ -289,7 +289,7 @@ WHERE {
 
       {?item wdt:P106 wd:Q2306091}
       UNION
-      {?item wdt:P101 wd:Q2306091}
+      {?item wdt:P101 wd:Q21201}
 
       ?item ?p ?o.
     }
