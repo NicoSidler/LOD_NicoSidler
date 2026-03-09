@@ -10,9 +10,6 @@ PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd:   <http://www.wikidata.org/entity/>
 PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
 
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?employer ?employerLabel (COUNT(DISTINCT ?item) AS ?eff)
 WHERE {
   # --- population (same logic as your first query)
