@@ -35,7 +35,7 @@ ORDER BY DESC(?eff)
 LIMIT 30
 ```
 
-### Most frequent occupations
+### Most frequent citizenships
 
 |citizenship                           |citizenshipLabel          |eff |
 |--------------------------------------|--------------------------|----|
