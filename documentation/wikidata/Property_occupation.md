@@ -37,16 +37,16 @@ LIMIT 10
 
 ### Most frequent occupations
 
-| object                                  | objectLabel        | eff   |
-| --------------------------------------- | ------------------ | ----- |
-| http://www.wikidata.org/entity/Q169470  | physicist          | 26091 |
-| http://www.wikidata.org/entity/Q1622272 | university teacher | 8094  |
-| http://www.wikidata.org/entity/Q11063   | astronomer         | 6804  |
-| http://www.wikidata.org/entity/Q170790  | mathematician      | 2299  |
-| http://www.wikidata.org/entity/Q1650915 | researcher         | 1403  |
-| http://www.wikidata.org/entity/Q752129  | astrophysicist     | 1064  |
-| http://www.wikidata.org/entity/Q81096   | engineer           | 1029  |
-| http://www.wikidata.org/entity/Q593644  | chemist            | 951   |
-| http://www.wikidata.org/entity/Q901     | scientist          | 869   |
-| http://www.wikidata.org/entity/Q36180   | writer             | 868   |
+|object                                 |objectLabel        |eff  |
+|---------------------------------------|-------------------|-----|
+|http://www.wikidata.org/entity/Q2306091|sociologist        |18324|
+|http://www.wikidata.org/entity/Q1622272|university teacher |6277 |
+|http://www.wikidata.org/entity/Q36180  |writer             |1600 |
+|http://www.wikidata.org/entity/Q82955  |politician         |1196 |
+|http://www.wikidata.org/entity/Q1238570|political scientist|1021 |
+|http://www.wikidata.org/entity/Q201788 |historian          |1010 |
+|http://www.wikidata.org/entity/Q4964182|philosopher        |924  |
+|http://www.wikidata.org/entity/Q1930187|journalist         |766  |
+|http://www.wikidata.org/entity/Q188094 |economist          |671  |
+|http://www.wikidata.org/entity/Q4773904|anthropologist     |599  |
 
