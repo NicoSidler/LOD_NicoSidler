@@ -25,8 +25,11 @@ WHERE {
       {?item wdt:P101 wd:Q21201}    # sociology
 
       ?item wdt:P31 wd:Q5;          # Any instance of a human.
-            wdt:P569 ?birthDate;    # It must necessarily have a birth date property
-            wdt:P21 ?gender.        # It must necessarily have a gender property
+            wdt:P569 ?birthDate.    # It must necessarily have a birth date property
+
+      OPTIONAL {
+        ?item wdt:P21 ?gender.      # gender is optional
+      }
 
       BIND(year(?birthDate) as ?year)
       FILTER(xsd:integer(?year) > 1801 && xsd:integer(?year) < 1990)
@@ -56,30 +59,29 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT (count(*) as ?effectif)
 WHERE {
 
-        ## note the service address          
-        SERVICE <https://query.wikidata.org/sparql>
-            {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-        
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
-                wdt:P21 ?gender. # It must necessarily have a gender property
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-  
-        OPTIONAL {
-	     ?item rdfs:label ?itemLabel.
+  ## note the service address
+  SERVICE <https://query.wikidata.org/sparql>
+    {
+      {?item wdt:P106 wd:Q2306091}  # sociologist
+      UNION
+      {?item wdt:P101 wd:Q21201}    # sociology
+
+      ?item wdt:P31 wd:Q5;          # Any instance of a human.
+            wdt:P569 ?birthDate.    # It must necessarily have a birth date property
+
+      OPTIONAL {
+        ?item wdt:P21 ?gender.      # gender is optional
+      }
+
+      BIND(year(?birthDate) as ?year)
+      FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+      OPTIONAL {
+        ?item rdfs:label ?itemLabel.
         FILTER(LANG(?itemLabel) = 'en')
+      }
     }
-   
-        }
-        }
+}
 ```
 
 ### Preparing to import data
@@ -97,42 +99,38 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT 
-        {
-           ?item wdt:P21 ?gender.
-           ?item  wdt:P569 ?year.
-           ?item rdfs:label ?itemLabel.
-           # ?item  wdt:P31 wd:Q5.
-           # Noter qu'on modifie pour disposer de la propriété standard
-           # afin de déclarer l'appartenance d'une instance à une classe
-           ?item  rdf:type wd:Q5. }
-      
-        WHERE {
+{
+  ?item wdt:P21 ?gender.
+  ?item wdt:P569 ?year.
+  ?item rdfs:label ?itemLabel.
+  ?item rdf:type wd:Q5.
+}
+WHERE {
 
-        ## note the service address          
-        SERVICE <https://query.wikidata.org/sparql>
-            {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-        
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
-                wdt:P21 ?gender. # It must necessarily have a gender property
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-  
-        OPTIONAL {
-	     ?item rdfs:label ?itemLabel.
+  ## note the service address
+  SERVICE <https://query.wikidata.org/sparql>
+    {
+      {?item wdt:P106 wd:Q2306091}  # sociologist
+      UNION
+      {?item wdt:P101 wd:Q21201}    # sociology
+
+      ?item wdt:P31 wd:Q5;          # Any instance of a human.
+            wdt:P569 ?birthDate.    # It must necessarily have a birth date property
+
+      OPTIONAL {
+        ?item wdt:P21 ?gender.      # gender is optional
+      }
+
+      BIND(year(?birthDate) as ?year)
+      FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+      OPTIONAL {
+        ?item rdfs:label ?itemLabel.
         FILTER(LANG(?itemLabel) = 'en')
+      }
     }
-   
-        }
-        }
-        LIMIT 5
+}
+LIMIT 5
   
 
 ```
