@@ -149,7 +149,7 @@ Two import strategies are possible:
 This is the recommended format for a graph URI in this context:
 
 ```
-<https://attereb.github.io/astronomers/graphs-defs.html#wikidata>
+<https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
 
 ```
 
@@ -176,7 +176,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 INSERT {
 
   ### Note that the data is imported into a named graph and not the DEFAULT one
-  GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
   {
     ?item wdt:P21 ?gender.
     ?item wdt:P569 ?year.
