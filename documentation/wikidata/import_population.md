@@ -175,52 +175,49 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 INSERT {
 
-        ### Note that the data is imported into a named graph and not the DEFAULT one
-        GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
-        {?item  wdt:P21 ?gender.
-           ?item wdt:P569 ?year. 
-           ?item rdfs:label ?itemLabel.           # ?item  wdt:P31 wd:Q5.
-           # modifier pour disposer de la propriété standard
-           ?item  rdf:type wd:Q5.
-           }
+  ### Note that the data is imported into a named graph and not the DEFAULT one
+  GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+  {
+    ?item wdt:P21 ?gender.
+    ?item wdt:P569 ?year.
+    ?item rdfs:label ?itemLabel.
+    ?item rdf:type wd:Q5.
+  }
 }
-      
-        WHERE {
-  
-  			SELECT DISTINCT ?item ?year ?gender ?itemLabel
-  
-  			WHERE {
 
-        ## note the service address          
-        SERVICE <https://query.wikidata.org/sparql>
-            {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-        
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
-                wdt:P21 ?gender. # It must necessarily have a gender property
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-  
+WHERE {
+
+  SELECT DISTINCT ?item ?year ?gender ?itemLabel
+
+  WHERE {
+
+    ## note the service address
+    SERVICE <https://query.wikidata.org/sparql>
+      {
+        {?item wdt:P106 wd:Q2306091}  # sociologist
+        UNION
+        {?item wdt:P101 wd:Q21201}    # sociology
+
+        ?item wdt:P31 wd:Q5;
+              wdt:P569 ?birthDate.
+
         OPTIONAL {
-	     ?item rdfs:label ?itemLabel.
-        FILTER(LANG(?itemLabel) = 'en')
-    }
-   
+          ?item wdt:P21 ?gender.
         }
-        }
-    ORDER BY ?item 
-    OFFSET 0
-    LIMIT 10000
-}
 
-      
+        BIND(year(?birthDate) as ?year)
+        FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+        OPTIONAL {
+          ?item rdfs:label ?itemLabel.
+          FILTER(LANG(?itemLabel) = 'en')
+        }
+      }
+  }
+  ORDER BY ?item
+  OFFSET 0
+  LIMIT 10000
+}
 
 ```
 
