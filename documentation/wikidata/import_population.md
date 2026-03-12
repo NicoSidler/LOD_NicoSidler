@@ -478,7 +478,7 @@ INSERT DATA {
 ### Add the gender class
 
 ```sparql
-### Inspect the genders:
+### Inspect the genders:9
 
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
