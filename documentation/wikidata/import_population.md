@@ -431,25 +431,27 @@ WHERE {
 
 ```
 PREFIX wd: <http://www.wikidata.org/entity/>
-PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX bd: <http://www.bigdata.com/rdf#>
 
 SELECT ?item ?itemLabel
 WHERE {
   {
-    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
-      ?item a wd:Q5.
-      MINUS { ?item rdfs:label ?label }
+    SELECT ?item
+    WHERE {
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?item a wd:Q5 .
+        MINUS { ?item rdfs:label ?label }
+      }
     }
+    LIMIT 10
   }
 
-  SERVICE <https://query.wikidata.org/sparql>
-  {
-    ?item rdfs:label ?itemLabel.
-    FILTER(LANG(?itemLabel) = 'ru')
+  SERVICE <https://query.wikidata.org/sparql> {
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "ru". }
   }
 }
-LIMIT 10
 ```
 
 
