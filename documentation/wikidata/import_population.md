@@ -46,9 +46,7 @@ LIMIT 10
 
 ### Count number of persons to import
 
-39170 personnes le 8 mars 2026
-
-Noter toutefois qu'il y a probablement des doubles noms, dates de naissance, etc. donc moins de personnes en principe
+23,208 people as of 12 March 2026
 
 ```sparql
 PREFIX wd: <http://www.wikidata.org/entity/>
@@ -153,16 +151,10 @@ This is the recommended format for a graph URI in this context:
 
 ```
 
-Or expressed in a generic way:
 
-```
-<https://[your girhub pseudo].github.io/[your repo name]/graphs-defs.html#wikidata>
+The graph URI is in fact a URL pointing to a page with the description of the [imported data](https://NicoSidler.github.io/sociologists/graphs-defs.html).
 
-```
-
-The graph URI is in fact a URL pointing to a page with the description of the [imported data](https://historian.digital/astronomers/graphs-defs.html).
-
-#### Requête de base
+#### Base request
 
 ```sparql
 PREFIX wd: <http://www.wikidata.org/entity/>
@@ -322,12 +314,12 @@ HAVING (COUNT(*) > 1)
 
 
 
-## Requête corrigée pour éviter les doublons de dates
+## New request to correct multiple dates
 
 On vide d'abord le graphe préalablement rempli (ATTENTION: tous les triplets sont éliminés)
 
 ```
-CLEAR GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+CLEAR GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
 
 ```
 
@@ -360,54 +352,52 @@ PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 INSERT {
 
-        ### Note that the data is imported into a named graph and not the DEFAULT one
-        GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
-        {?item  wdt:P21 ?min_gender.
-           ?item wdt:P569 ?min_year. 
-           ?item rdfs:label ?min_label.           # ?item  wdt:P31 wd:Q5.
-           # modifier pour disposer de la propriété standard
-           ?item  rdf:type wd:Q5.
-           }
+  ### Note that the data is imported into a named graph and not the DEFAULT one
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
+  {
+    ?item wdt:P21 ?min_gender.
+    ?item wdt:P569 ?min_year.
+    ?item rdfs:label ?min_label.
+    ?item rdf:type wd:Q5.
+  }
 }
-      
-        WHERE {
-  
-  			SELECT ?item (MIN(?year) as ?min_year) (MIN(?gender) as ?min_gender) (MIN(?itemLabel) as ?min_label)
-  
-  			WHERE {
 
-        ## note the service address          
-        SERVICE <https://query.wikidata.org/sparql>
-            {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-        
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
-                wdt:P21 ?gender. # It must necessarily have a gender property
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-  
+WHERE {
+
+  SELECT ?item (MIN(?year) as ?min_year) (MIN(?gender) as ?min_gender) (MIN(?itemLabel) as ?min_label)
+
+  WHERE {
+
+    SERVICE <https://query.wikidata.org/sparql>
+      {
+        {?item wdt:P106 wd:Q2306091}  # sociologist
+        UNION
+        {?item wdt:P101 wd:Q21201}    # sociology
+
+        ?item wdt:P31 wd:Q5;
+              wdt:P569 ?birthDate.
+
         OPTIONAL {
-	     ?item rdfs:label ?itemLabel.
-        FILTER(LANG(?itemLabel) = 'en')
-    }
-   
+          ?item wdt:P21 ?gender.
         }
+
+        BIND(year(?birthDate) as ?year)
+        FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+        OPTIONAL {
+          ?item rdfs:label ?itemLabel.
+          FILTER(LANG(?itemLabel) = 'en')
         }
-    GROUP BY ?item
-    ORDER BY ?item 
-    OFFSET 0
-    LIMIT 10000
+      }
+  }
+  GROUP BY ?item
+  ORDER BY ?item
+  OFFSET 0
+  LIMIT 10000
 }
 ```
 
@@ -422,18 +412,19 @@ INSERT {
 
 ### Find persons without labels
 
-1911 persons
+707 persons
 
 ```
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT (COUNT(*) AS ?number)
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata> {
-    ?item  a wd:Q5.
-    MINUS { ?item rdfs:label ?label}
-    }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?item a wd:Q5.
+    MINUS { ?item rdfs:label ?label }
+  }
 }
 ```
 
@@ -442,20 +433,21 @@ WHERE {
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT ?item ?itemLabel
 WHERE {
-    {GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata> {
-        ?item  a wd:Q5.
-        MINUS { ?item rdfs:label ?label}
-        }
+  {
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+      ?item a wd:Q5.
+      MINUS { ?item rdfs:label ?label }
     }
+  }
+
   SERVICE <https://query.wikidata.org/sparql>
-    {
-      ?item rdfs:label ?itemLabel.
-        FILTER(LANG(?itemLabel) = 'ru')
-    }
-  
-        }
+  {
+    ?item rdfs:label ?itemLabel.
+    FILTER(LANG(?itemLabel) = 'ru')
+  }
 }
 LIMIT 10
 ```
@@ -470,12 +462,13 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 INSERT DATA {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-    {
-        wd:Q5 rdfs:label "Person".
-    }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
+  {
+    wd:Q5 rdfs:label "Person".
+  }
 }
 
 ```
@@ -483,8 +476,7 @@ INSERT DATA {
 ### Add the gender class
 
 ```sparql
-###  Inspect the genders:
-# number of different countries
+### Inspect the genders:
 
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
@@ -492,16 +484,14 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT (COUNT(*) as ?n)
-WHERE
-   {
-   SELECT DISTINCT ?gender
-   WHERE {
-      GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-         {
-            ?s wdt:P21 ?gender.
-         }
-      }
-   }
+WHERE {
+  SELECT DISTINCT ?gender
+  WHERE {
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+      ?s wdt:P21 ?gender.
+    }
+  }
+}
 ```
 
 ```sparql
@@ -513,19 +503,18 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
-WITH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
+WITH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
 INSERT {
-   ?gender rdf:type wd:Q48264.
+  ?gender rdf:type wd:Q48264.
 }
-WHERE
-   {
-   SELECT DISTINCT ?gender
-   WHERE {
-         {
-            ?s wdt:P21 ?gender.
-         }
-      }
-   }
+WHERE {
+  SELECT DISTINCT ?gender
+  WHERE {
+    {
+      ?s wdt:P21 ?gender.
+    }
+  }
+}
 ```
 
 ```sparql
@@ -533,14 +522,14 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 INSERT DATA {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-    {
-        wd:Q48264 rdfs:label "Gender Identity".
-    }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
+  {
+    wd:Q48264 rdfs:label "Gender Identity".
+  }
 }
-
 ```
 
 ### Verify imported triples and add labels to genders
@@ -549,17 +538,21 @@ INSERT DATA {
 ### Number of triples in the graph
 SELECT (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s ?p ?o}
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s ?p ?o
+  }
 }
 ```
 
 ```sparql
 ### Number of persons with more than one label : no person
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
 SELECT (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s rdf:label ?o}
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s rdfs:label ?o
+  }
 }
 GROUP BY ?s
 HAVING (?n > 1)
@@ -574,13 +567,15 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?s (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s wdt:P21 ?gen}
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s wdt:P21 ?gen
+  }
 }
 GROUP BY ?s
 HAVING (?n > 1)
 ```
 
+```sparql
 ```sparql
 ### Number of persons per gender
 PREFIX wd: <http://www.wikidata.org/entity/>
@@ -588,11 +583,14 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?gen (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s wdt:P21 ?gen}
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s wdt:P21 ?gen
+  }
 }
 GROUP BY ?gen
 #HAVING (?n > 1)
+```
+
 ```
 
 ```sparql
@@ -602,11 +600,11 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?gen (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s wdt:P21 ?gen;
-            wdt:P569 ?birthDate.
-        FILTER (?birthDate < '1900')   
-          }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s wdt:P21 ?gen;
+       wdt:P569 ?birthDate.
+    FILTER(?birthDate < 1900)
+  }
 }
 GROUP BY ?gen
 #HAVING (?n > 1)
@@ -615,7 +613,7 @@ GROUP BY ?gen
 ```sparql
 ### Add the label to the gender
 
-# This query will first retrieve all the genders, 
+# This query will first retrieve all the genders,
 # then fetch in Wikidata the gender's labels
 
 PREFIX wd: <http://www.wikidata.org/entity/>
@@ -626,21 +624,21 @@ PREFIX bd: <http://www.bigdata.com/rdf#>
 SELECT ?gen ?genLabel
 WHERE {
 
-  
-
-    {SELECT DISTINCT ?gen
+  {
+    SELECT DISTINCT ?gen
     WHERE {
-        GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>  
-            {?s wdt:P21 ?gen}
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?s wdt:P21 ?gen
+      }
     }
-    }   
+  }
 
-    SERVICE  <https://query.wikidata.org/sparql> {
-        ## Add this clause in order to fill the variable    
-        BIND(?gen as ?gen)
-        BIND ( ?genLabel as ?genLabel)
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }  
-    }
+  SERVICE <https://query.wikidata.org/sparql> {
+    ## Add this clause in order to fill the variable
+    BIND(?gen as ?gen)
+    BIND(?genLabel as ?genLabel)
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+  }
 }
 ```
 
@@ -654,26 +652,23 @@ PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 CONSTRUCT {
-     ?gen rdfs:label ?genLabel
-  
-} 
+  ?gen rdfs:label ?genLabel
+}
 WHERE {
-
-  
-
-    {SELECT DISTINCT ?gen
+  {
+    SELECT DISTINCT ?gen
     WHERE {
-        GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>  
-            {?s wdt:P21 ?gen}
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?s wdt:P21 ?gen
+      }
     }
-    }   
+  }
 
-    SERVICE  <https://query.wikidata.org/sparql> {
-        ## Add this clause in order to fill the variable    
-        BIND(?gen as ?gen)
-        BIND ( ?genLabel as ?genLabel)
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }  
-    }
+  SERVICE <https://query.wikidata.org/sparql> {
+    BIND(?gen AS ?gen)
+    BIND(?genLabel AS ?genLabel)
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+  }
 }
 ```
 
@@ -686,26 +681,26 @@ PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-WITH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md> 
+WITH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
 INSERT {
-     ?gen rdfs:label ?genLabel
-  
-} 
-WHERE {  
-
-    {SELECT DISTINCT ?gen
+  ?gen rdfs:label ?genLabel
+}
+WHERE {
+  {
+    SELECT DISTINCT ?gen
     WHERE {
-        GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>  
-            {?s wdt:P21 ?gen}
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?s wdt:P21 ?gen
+      }
     }
-    }   
+  }
 
-    SERVICE  <https://query.wikidata.org/sparql> {
-        ## Add this clause in order to fill the variable    
-        BIND(?gen as ?gen)
-        BIND ( ?genLabel as ?genLabel)
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }  
-    }
+  SERVICE <https://query.wikidata.org/sparql> {
+    ## Add this clause in order to fill the variable
+    BIND(?gen as ?gen)
+    BIND(?genLabel as ?genLabel)
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
+  }
 }
 ```
 
@@ -716,22 +711,21 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX bd: <http://www.bigdata.com/rdf#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?gen ?genLabel ?n
-WHERE
-{
-    {
+WHERE {
+  {
     SELECT ?gen (COUNT(*) as ?n)
-        WHERE {
-            GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>  
-                    {
-            ?s wdt:P21 ?gen.
-            }
-        }  
-        GROUP BY ?gen      
-    }  
-    ?gen rdfs:label ?genLabel
-    }   
+    WHERE {
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?s wdt:P21 ?gen.
+      }
+    }
+    GROUP BY ?gen
+  }
+  ?gen rdfs:label ?genLabel
+}
 
 ```
 
@@ -742,17 +736,15 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-
 SELECT ?s ?label ?birthDate ?genLabel
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {
-            ## A property path passes through 
-            # two or more properties
-            ?s wdt:P21 / rdfs:label ?genLabel;
-            rdfs:label ?label;
-            wdt:P569 ?birthDate.
-          }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ## A property path passes through
+    # two or more properties
+    ?s wdt:P21 / rdfs:label ?genLabel;
+       rdfs:label ?label;
+       wdt:P569 ?birthDate.
+  }
 }
 ORDER BY ?birthDate
 LIMIT 10
@@ -767,11 +759,10 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {
-          # ?s wdt:P31 wd:Q5 
-          ?s a wd:Q5
-          }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    # ?s wdt:P31 wd:Q5
+    ?s a wd:Q5
+  }
 }
 ```
 
@@ -783,16 +774,15 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-
-SELECT  ?s (MAX(?label) as ?label) (xsd:integer(MAX(?birthDate)) as ?birthDate) 
-    (MAX(?gen) as ?gen) (MAX(?genLabel) AS ?genLabel)
+SELECT ?s (MAX(?label) as ?label) (xsd:integer(MAX(?birthDate)) as ?birthDate)
+       (MAX(?gen) as ?gen) (MAX(?genLabel) AS ?genLabel)
 WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s wdt:P21 ?gen;
-            rdfs:label ?label;
-            wdt:P569 ?birthDate.
-        ?gen rdfs:label ?genLabel  
-          }
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s wdt:P21 ?gen;
+       rdfs:label ?label;
+       wdt:P569 ?birthDate.
+    ?gen rdfs:label ?genLabel
+  }
 }
 GROUP BY ?s
 LIMIT 10
@@ -805,33 +795,33 @@ LIMIT 10
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT (COUNT(*) as ?n)
 WHERE {
-SELECT  ?s (MAX(?label) as ?label) (xsd:integer(MAX(?birthDate)) as ?birthDate) 
-            (MAX(?gen) as ?gen) (MAX(?genLabel) AS ?genLabel)
-WHERE {
-    GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-        {?s wdt:P21 ?gen;
-            rdfs:label ?label;
-            wdt:P569 ?birthDate.
-          }
-}
-GROUP BY ?s
+  SELECT ?s (MAX(?label) as ?label) (xsd:integer(MAX(?birthDate)) as ?birthDate)
+         (MAX(?gen) as ?gen) (MAX(?genLabel) AS ?genLabel)
+  WHERE {
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+      ?s wdt:P21 ?gen;
+         rdfs:label ?label;
+         wdt:P569 ?birthDate.
+    }
+  }
+  GROUP BY ?s
 }
 ```
 
 ```sparql
 ### Ajouter le label pour la propriété "date of birth"
 
-PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 INSERT DATA {
-GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-{    wdt:P569 rdfs:label "date of birth"
-}  
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    wdt:P569 rdfs:label "date of birth"@en
+  }
 }
 
 
@@ -840,15 +830,13 @@ GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/
 ```sparql
 ### Nombre de personnes avec propriétés de base sans doublons (choix aléatoire)
 
-PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 INSERT DATA {
-GRAPH <https://github.com/Sciences-historiques-numeriques/astronomers/blob/main/graphs/wikidata-imported-data.md>
-{    wdt:P21 rdfs:label "sex or gender"
-}  
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    wdt:P21 rdfs:label "sex or gender"@en
+  }
 }
-
 
 ```
