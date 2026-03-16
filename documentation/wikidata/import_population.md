@@ -2,11 +2,13 @@
 
 &nbsp;
 
-In this notebook we describe the steps needed to import the data into your own triplestore.
+In this notebook we describe the steps needed to import the data into your own triplestore. As a triplestore you can use Fuseki, or Allegrograph, or any other technology.
 
-The triplestore can be local or online. The configuration of the access has to be managed at the level of the sparqlbook plugin and a connection must be active in order to execute these queries.
+The triplestore can be local or online.
 
 First we check the basic properties of the population: name, gender, year of birth.
+
+Copy-paste this query to the SPARQL-editor of your choice (Fuseki, Allegrograph, etc.)
 
 ```sparql
 PREFIX wd: <http://www.wikidata.org/entity/>
