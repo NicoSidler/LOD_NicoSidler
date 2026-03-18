@@ -23,18 +23,19 @@ Number of persons with more than one label : 504
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-# This part of the query counts how many persons have more then one label 
-SELECT (COUNT(*) as ?n)
+SELECT (COUNT(*) AS ?n)
 WHERE {
-  # This part of the query finds persons with more than one label  
-  SELECT (COUNT(*) as ?n)
-  WHERE {
-      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
-          {?s a wd:Q5;
-               rdfs:label ?label}
+  {
+    SELECT ?s
+    WHERE {
+      GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+        ?s a wd:Q5 ;
+           rdfs:label ?label .
+      }
+    }
+    GROUP BY ?s
+    HAVING (COUNT(*) > 1)
   }
-  GROUP BY ?s
-  HAVING (?n > 1)
 }
 ```
 
@@ -78,31 +79,35 @@ ORDER BY DESC(?n)
 
 #### Persons with more than one gender
 
-
-| s                                                                                      | labels                      |
-| ---------------------------------------------------------------------------------------- | ----------------------------- |
-| [http://www.wikidata.org/entity/Q67541374](http://www.wikidata.org/entity/Q67541374)   | female\| male               |
-| [http://www.wikidata.org/entity/Q136969949](http://www.wikidata.org/entity/Q136969949) | female\| male               |
-| [http://www.wikidata.org/entity/Q42207726](http://www.wikidata.org/entity/Q42207726)   | transmasculine\| non-binary |
-| [http://www.wikidata.org/entity/Q57136415](http://www.wikidata.org/entity/Q57136415)   | female\| male               |
-| [http://www.wikidata.org/entity/Q108220002](http://www.wikidata.org/entity/Q108220002) | female\| male               |
-| [http://www.wikidata.org/entity/Q107165887](http://www.wikidata.org/entity/Q107165887) | female\| male               |
-
 ```
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?s (GROUP_CONCAT(?genLabel; separator= ' | ') AS ?labels)
+SELECT ?s (GROUP_CONCAT(?genLabel; separator=" | ") AS ?labels)
 WHERE {
-    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
-      ?s wdt:P21 ?gen.
-      ?gen rdfs:label ?genLabel
+  GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
+    ?s wdt:P21 ?gen .
+    ?gen rdfs:label ?genLabel .
   }
- } 
+}
 GROUP BY ?s
-HAVING(COUNT(*) > 1)
+HAVING (COUNT(*) > 1)
 
 ```
+| s                                         | labels               |
+|-------------------------------------------|----------------------|
+| http://www.wikidata.org/entity/Q25394676  | male | female        |
+| http://www.wikidata.org/entity/Q105840219 | male | female        |
+| http://www.wikidata.org/entity/Q20968749  | male | female        |
+| http://www.wikidata.org/entity/Q23946881  | male | female        |
+| http://www.wikidata.org/entity/Q52016574  | male | female        |
+| http://www.wikidata.org/entity/Q25460025  | female | trans woman |
+| http://www.wikidata.org/entity/Q12358460  | male | female        |
+| http://www.wikidata.org/entity/Q7383082   | male | female        |
+| http://www.wikidata.org/entity/Q56849343  | male | trans man     |
+| http://www.wikidata.org/entity/Q30694160  | male | female        |
+| http://www.wikidata.org/entity/Q105646335 | male | female        |
 
 ## Prepare data to analyse
 
@@ -129,7 +134,7 @@ LIMIT 10
 
 ### Number of persons (with double labels, genders, etc.)
 
-Nuber: 32956
+Nuber: 19027
 
 ```sparql
 
@@ -147,7 +152,7 @@ WHERE {
 }
 ```
 
-### Take ony person only once (FINAL QUERY)
+### Take one person only once (FINAL QUERY)
 
 This is the query to prepare the data for the analysis
 
@@ -160,14 +165,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 
-SELECT  ?s (MIN(?label) as ?label) (xsd:integer(MIN(?birthDate)) as ?birthDate) (MIN(?genLabel) AS ?genLabel)
+SELECT  ?s (MIN(?llabel) as ?label) (xsd:integer(MIN(?bbirthDate)) as ?birthDate) (MIN(?ggenLabel) AS ?genLabel)
 WHERE {
     GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
         {?s a wd:Q5;
             wdt:P21 ?gen;
-            rdfs:label ?label;
-            wdt:P569 ?birthDate.
-        ?gen rdfs:label ?genLabel  
+            rdfs:label ?llabel;
+            wdt:P569 ?bbirthDate.
+        ?gen rdfs:label ?ggenLabel  
           }
 }
 GROUP BY ?s
@@ -177,7 +182,7 @@ LIMIT 10
 
 #### Number of real persons, without double labels, etc.
 
-Number: 32693
+Number: 18865
 
 ```sparql
 
@@ -188,14 +193,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT (COUNT(*) as ?n)
 WHERE {
-    SELECT  ?s (MIN(?label) as ?label) (xsd:integer(MIN(?birthDate)) as ?birthDate) (MIN(?genLabel) AS ?genLabel)
+    SELECT  ?s (MIN(?llabel) as ?label) (xsd:integer(MIN(?bbirthDate)) as ?birthDate) (MIN(?ggenLabel) AS ?genLabel)
     WHERE {
         GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
             {?s a wd:Q5;
                 wdt:P21 ?gen;
-                rdfs:label ?label;
-                wdt:P569 ?birthDate.
-            ?gen rdfs:label ?genLabel  
+                rdfs:label ?llabel;
+                wdt:P569 ?bbirthDate.
+            ?gen rdfs:label ?ggenLabel  
             }
     }
     GROUP BY ?s
