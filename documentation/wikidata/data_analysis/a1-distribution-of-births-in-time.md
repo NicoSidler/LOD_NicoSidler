@@ -79,7 +79,7 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?s (GROUP_CONCAT(?genLabel; separator= ' | ') AS ?labels)
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata> {
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata> {
       ?s wdt:P21 ?gen.
       ?gen rdfs:label ?genLabel
   }
@@ -99,7 +99,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?s ?label ?birthDate ?genLabel
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
         {
             ## A property path passes through 
             # two or more properties
@@ -124,7 +124,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT (COUNT(*) as ?n)
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
         {
           # ?s wdt:P31 wd:Q5 
           ?s a wd:Q5
@@ -147,7 +147,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT  ?s (MIN(?label) as ?label) (xsd:integer(MIN(?birthDate)) as ?birthDate) (MIN(?genLabel) AS ?genLabel)
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
         {?s a wd:Q5;
             wdt:P21 ?gen;
             rdfs:label ?label;
@@ -175,7 +175,7 @@ SELECT (COUNT(*) as ?n)
 WHERE {
     SELECT  ?s (MIN(?label) as ?label) (xsd:integer(MIN(?birthDate)) as ?birthDate) (MIN(?genLabel) AS ?genLabel)
     WHERE {
-        GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+        GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
             {?s a wd:Q5;
                 wdt:P21 ?gen;
                 rdfs:label ?label;
@@ -200,14 +200,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 
-SELECT  ?s (MIN(?label) as ?label) (xsd:integer(MIN(?birthDate)) as ?birthDate) (MIN(?genLabel) AS ?genLabel)
+SELECT  ?s (MIN(?llabel) as ?label) (xsd:integer(MIN(?bbirthDate)) as ?birthDate) (MIN(?ggenLabel) AS ?genLabel)
 WHERE {
-    GRAPH <https://historian.digital/astronomers/graphs-defs.html#wikidata>
+    GRAPH <https://NicoSidler.github.io/sociologists/graphs-defs.html#wikidata>
         {?s a wd:Q5;
             wdt:P21 ?gen;
-            rdfs:label ?label;
-            wdt:P569 ?birthDate.
-        ?gen rdfs:label ?genLabel  
+            rdfs:label ?llabel;
+            wdt:P569 ?bbirthDate.
+        ?gen rdfs:label ?ggenLabel  
           }
 }
 GROUP BY ?s #getting rid of double values
