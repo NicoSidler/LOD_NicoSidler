@@ -3,6 +3,7 @@
 ## Explore available data
 
 ### Count available triples
+77180
 
 ```sparql
 ### Number of triples in the graph
@@ -15,7 +16,7 @@ WHERE {
 
 ### Inspect the labels
 
-Number of persons with more than one label : 696
+Number of persons with more than one label : 504
 
 ```sparql
 ### 
