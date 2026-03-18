@@ -61,6 +61,20 @@ WHERE {
 GROUP BY ?genLabel
 ORDER BY DESC(?n)
 ```
+| genLabel           | n     |
+|--------------------|-------|
+| male               | 13395 |
+| female             | 5457  |
+|                    | 162   |
+| trans woman        | 9     |
+| trans man          | 6     |
+| non-binary         | 3     |
+| undisclosed gender | 3     |
+| cisgender woman    | 1     |
+| genderqueer        | 1     |
+| transmasculine     | 1     |
+
+
 
 #### Persons with more than one gender
 
