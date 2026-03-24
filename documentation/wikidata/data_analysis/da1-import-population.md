@@ -69,26 +69,21 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-
 SELECT DISTINCT (?item AS ?person_uri) ?person_label
 WHERE {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-  
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
+  { ?item wdt:P106 wd:Q2306091 }  # sociologist
+  UNION
+  { ?item wdt:P101 wd:Q21201 }    # sociology
 
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-  
-            ?item rdfs:label ?person_label.
-            FILTER(LANG(?person_label) = 'en')
-        }
+  ?item wdt:P31 wd:Q5;            # Any instance of a human.
+        wdt:P569 ?birthDate.      # It must necessarily have a birth date property
+
+  BIND(year(?birthDate) AS ?year)
+  FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+  ?item rdfs:label ?person_label.
+  FILTER(LANG(?person_label) = "en")
+}
 ORDER BY ?item
 ```
 
@@ -104,27 +99,26 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-
-SELECT DISTINCT (?item AS ?person_uri) (min(?person_label_al) as ?person_label )
-#SELECT (COUNT(*) AS ?n)
+SELECT DISTINCT (?item AS ?person_uri) (MIN(?person_label_al) AS ?person_label)
+# SELECT (COUNT(*) AS ?n)
 WHERE {
-            {?item wdt:P106 wd:Q11063}  # astronomer
-            UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
-  
-            ?item wdt:P31 wd:Q5;  # Any instance of a human.
-                wdt:P569 ?birthDate; # It must necessarily have a birth date property
+  { ?item wdt:P106 wd:Q2306091 }  # sociologist
+  UNION
+  { ?item wdt:P101 wd:Q21201 }    # sociology
 
-        BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
-        MINUS{?item rdfs:label ?person_label_en.
-              FILTER(LANG(?person_label_en) = 'en')   }
-       ?item rdfs:label ?person_label_al.
-        }
+  ?item wdt:P31 wd:Q5;            # Any instance of a human.
+        wdt:P569 ?birthDate.      # It must necessarily have a birth date property
+
+  BIND(year(?birthDate) AS ?year)
+  FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+  MINUS {
+    ?item rdfs:label ?person_label_en.
+    FILTER(LANG(?person_label_en) = "en")
+  }
+
+  ?item rdfs:label ?person_label_al.
+}
 GROUP BY ?item
 ```
 
