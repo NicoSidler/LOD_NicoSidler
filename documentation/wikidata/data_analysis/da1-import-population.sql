@@ -1,13 +1,13 @@
 
 -- explore first rows
 SELECT *
-FROM person_import
+FROM import_person
 LIMIT 10;
 
 
 -- observe if a person has many rows
 SELECT person_uri, COUNT(*) as num
-FROM person_import
+FROM import_person
 GROUP BY person_uri
 ORDER BY num DESC
 LIMIT 10;
@@ -33,14 +33,14 @@ wikidata_uri TEXT);
 
 -- prepare data import from the import table
 SELECT DISTINCT person_uri , MIN("year"), MIN(gender_label)
-FROM person_import 
+FROM import_person
 GROUP BY person_uri
 LIMIT 10;
 
 -- import the data to the person table
 INSERT INTO person (wikidata_uri, birth_year, gender)
 SELECT DISTINCT person_uri , MIN("year"), MIN(gender_label)
-FROM person_import 
+FROM import_person
 GROUP BY person_uri;
 
 
