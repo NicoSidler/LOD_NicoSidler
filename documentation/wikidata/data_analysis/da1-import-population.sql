@@ -1,5 +1,7 @@
 
+
 -- explore first rows
+
 SELECT *
 FROM import_person
 LIMIT 10;
@@ -50,7 +52,7 @@ FROM person
 LIMIT 10;
 
 
--- number of unique persons
+-- number of unique persons 19043
 SELECT COUNT(*)
 FROM person;
 
@@ -68,8 +70,7 @@ GROUP BY gender
 ORDER BY num DESC;
 
 
-
-/*
+//*
  * LABELS
  */
 
