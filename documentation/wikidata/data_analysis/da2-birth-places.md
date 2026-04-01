@@ -19,22 +19,18 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT (?item AS ?person_uri) ?birth_place_uri (MIN(?birth_place_label) as ?place_label) 
 WHERE {
-            {?item wdt:P106 wd:Q11063}  # astronomer
+            {?item wdt:P106 wd:Q2306091}  # sociologist
             UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
+            {?item wdt:P101 wd:Q21201}     # sociology
   
             ?item wdt:P31 wd:Q5;  # Any instance of a human.
                 wdt:P569 ?birthDate; # It must necessarily have a birth date property
         BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
+        FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )
    
        ?item wdt:P19 ?birth_place_uri.
         ### Places without English labels won't be in the result.
-        # We use the next query to get them 
+        # We use the next query to get them 
         ?birth_place_uri rdfs:label ?birth_place_label.
                 FILTER(LANG(?birth_place_label) = 'en')
    
@@ -56,18 +52,14 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT (?item AS ?person_uri) ?birth_place_uri (MIN(?person_name_al) as ?place_label) 
 WHERE {
-            {?item wdt:P106 wd:Q11063}  # astronomer
+            {?item wdt:P106 wd:Q2306091}  # sociologist
             UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
+            {?item wdt:P101 wd:Q21201}     # sociology
   
             ?item wdt:P31 wd:Q5;  # Any instance of a human.
                 wdt:P569 ?birthDate; # It must necessarily have a birth date property
         BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )   
+        FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )   
        ?item wdt:P19 ?birth_place_uri.
 
     MINUS{?birth_place_uri rdfs:label ?place_label_en.
@@ -76,7 +68,6 @@ WHERE {
         
         }
         GROUP BY ?item ?birth_place_uri
-
 
 ```
 
@@ -98,18 +89,14 @@ SELECT ?birth_place_uri (MIN(?coordinates) as ?long_lat)
 WHERE {  
        {SELECT DISTINCT ?birth_place_uri
         WHERE {  
-            {?item wdt:P106 wd:Q11063}  # astronomer
+            {?item wdt:P106 wd:Q2306091}  # sociologist
             UNION
-            {?item wdt:P101 wd:Q333}     # astronomy
-            UNION
-            {?item wdt:P106 wd:Q169470}  # physicist
-            UNION
-            {?item wdt:P101 wd:Q413}     # physics   
+            {?item wdt:P101 wd:Q21201}     # sociology
   
             ?item wdt:P31 wd:Q5;  # Any instance of a human.
                 wdt:P569 ?birthDate; # It must necessarily have a birth date property
         BIND(year(?birthDate) as ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
+        FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )
    
        ?item wdt:P19 ?birth_place_uri.
           }
@@ -151,20 +138,17 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT DISTINCT ?birth_place_uri ?birth_place_label  ?place_class_uri ?place_class_label
+
+SELECT DISTINCT ?birth_place_uri ?birth_place_label ?place_class_uri ?place_class_label
 WHERE {
-{?item wdt:P106 wd:Q11063}  # astronomer
+{?item wdt:P106 wd:Q2306091}  # sociologist
 UNION
-{?item wdt:P101 wd:Q333}     # astronomy
-UNION
-{?item wdt:P106 wd:Q169470}  # physicist
-UNION
-{?item wdt:P101 wd:Q413}     # physics
+{?item wdt:P101 wd:Q21201}     # sociology
 
         ?item wdt:P31 wd:Q5;  # Any instance of a human.
             wdt:P569 ?birthDate; # It must necessarily have a birth date property
     BIND(year(?birthDate) as ?year)
-    FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
+    FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )
 
    ?item wdt:P19 ?birth_place_uri.
    OPTIONAL {?birth_place_uri rdfs:label ?birth_place_label.
@@ -173,7 +157,7 @@ UNION
    ?birth_place_uri wdt:P31 ?place_class_uri.
    ?place_class_uri rdfs:label ?place_class_label .
 	FILTER(LANG(?place_class_label) = 'en')
-      }  
+      }
 ```
 
 We take in this query also the classes of the classes at two levels.
@@ -185,6 +169,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT DISTINCT ?place_class_uri ?place_class_label 
 ?place_class_of_class_uri ?place_class_of_class_label
 ?place_class_of_class_lev2_label ?place_class_of_class_lev2_uri
@@ -193,23 +178,19 @@ WHERE {
     {
       SELECT DISTINCT ?place_class_uri ?place_class_label 
       WHERE {
-      {?item wdt:P106 wd:Q11063}  # astronomer
+      {?item wdt:P106 wd:Q2306091}  # sociologist
       UNION
-      {?item wdt:P101 wd:Q333}     # astronomy
-      UNION
-      {?item wdt:P106 wd:Q169470}  # physicist
-      UNION
-      {?item wdt:P101 wd:Q413}     # physics
+      {?item wdt:P101 wd:Q21201}     # sociology
 
               ?item wdt:P31 wd:Q5;  # Any instance of a human.
                   wdt:P569 ?birthDate; # It must necessarily have a birth date property
           BIND(year(?birthDate) as ?year)
-          FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981 )
+          FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )
 
         ?item wdt:P19 ?birth_place_uri.
         ?birth_place_uri wdt:P31 ?place_class_uri.
         ?place_class_uri rdfs:label ?place_class_label .
-        FILTER(LANG(?place_class_of_class_label) = 'en')
+        FILTER(LANG(?place_class_label) = 'en')
       }
       LIMIT 100
     }
@@ -225,7 +206,6 @@ WHERE {
 	FILTER(LANG(?place_class_of_class_lev2_label) = 'en')
 
       }
-
 ```
 
 ```
@@ -233,6 +213,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT ?birth_place_uri 
 (GROUP_CONCAT(DISTINCT ?place_class_label; separator=", ") AS ?place_class_labels)
 ?place_class_of_class_lev2_label ?place_class_of_class_lev2_uri
@@ -240,18 +221,15 @@ WHERE {
 
 {SELECT DISTINCT ?birth_place_uri ?place_class_uri ?place_class_label
 WHERE {
-{?item wdt:P106 wd:Q11063}  # astronomer
+{?item wdt:P106 wd:Q2306091}  # sociologist
 UNION
-{?item wdt:P101 wd:Q333}     # astronomy
-UNION
-{?item wdt:P106 wd:Q169470}  # physicist
-UNION
-{?item wdt:P101 wd:Q413}     # physics
+{?item wdt:P101 wd:Q21201}     # sociology
 
         ?item wdt:P31 wd:Q5;  # Any instance of a human.
             wdt:P569 ?birthDate; # It must necessarily have a birth date property
     BIND(year(?birthDate) as ?year)
-% 
+    FILTER(xsd:integer(?year) > 1800 && xsd:integer(?year) < 1981 )
+
    ?item wdt:P19 ?birth_place_uri.
    ?birth_place_uri wdt:P31 ?place_class_uri.
    ?place_class_uri rdfs:label ?place_class_label .
@@ -259,15 +237,12 @@ UNION
       }
     }
 
-   
-
    OPTIONAL {
     # wdt:P279 subclass of
     ?place_class_uri wdt:P279 / wdt:P279 ?place_class_of_class_lev2_uri.
 	?place_class_of_class_lev2_uri rdfs:label ?place_class_of_class_lev2_label .
 	FILTER(LANG(?place_class_of_class_lev2_label) = 'en')
    }
-  
 
     }
 	GROUP BY ?birth_place_uri ?place_class_of_class_lev2_uri ?place_class_of_class_lev2_label
