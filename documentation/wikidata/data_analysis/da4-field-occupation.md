@@ -73,36 +73,31 @@ LIMIT 100
 ### Query to get the data and import them into the database
 
 ```sparql
-
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT DISTINCT ?person_uri ?field_uri ?field_label
-WHERE
-    {
-    ### subquery adding the distinct clause
-        {
-        SELECT DISTINCT ?person_uri
-        WHERE {
-        ?person_uri wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
-            UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413} 
-            }
-        } 
-        ### The property P101 associates fields of work to persons
-        ?person_uri wdt:P101 ?field_uri.
-        ?field_uri rdfs:label ?field_label.
-        FILTER(LANG(?field_label) = 'en')
-}  
+WHERE {
+  {
+    SELECT DISTINCT ?person_uri
+    WHERE {
+      ?person_uri wdt:P31 wd:Q5;
+                  wdt:P569 ?birthDate.
+      BIND(REPLACE(STR(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+      { ?person_uri wdt:P106 wd:Q2306091 }   # sociologist
+      UNION
+      { ?person_uri wdt:P101 wd:Q21201 }     # sociology
+    }
+  }
+
+  ?person_uri wdt:P101 ?field_uri.
+  ?field_uri rdfs:label ?field_label.
+  FILTER(LANG(?field_label) = "en")
+}
 LIMIT 100
 
 ```
@@ -181,21 +176,16 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 SELECT ?person_uri ?occupation_label ?occupation_uri
 WHERE
     {
-    ### subquery adding the distinct clause
         {
         SELECT DISTINCT ?person_uri
         WHERE {
         ?person_uri wdt:P31 wd:Q5; 
               wdt:P569 ?birthDate.
         BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
+        FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+            {?person_uri wdt:P106 wd:Q2306091}   # sociologist
             UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413}  
+            {?person_uri wdt:P101 wd:Q21201}     # sociology
             }
         } 
 	
@@ -206,4 +196,5 @@ WHERE
 }  
 ORDER BY ?person_uri ?occupation_uri
 LIMIT 10
+  
 ```
