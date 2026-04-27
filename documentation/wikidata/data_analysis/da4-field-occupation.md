@@ -70,7 +70,7 @@ LIMIT 100
 
 &nbsp;
 
-### Query to get the data and import them into the database
+### Query to get the data and import them into the database (saved as import_field)
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -165,7 +165,7 @@ WHERE
 
 
 
-## Occupations
+## Occupations (saved as import_occupation)
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
