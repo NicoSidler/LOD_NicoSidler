@@ -8,33 +8,27 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 
-SELECT ?object ?objectLabel (COUNT(*) as ?eff)
-WHERE
-    {
-    ### subquery adding the distinct clause
-        {
-        SELECT DISTINCT ?person_uri
-        WHERE {
-        ?person_uri wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
-            UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413}  
-            }
-        } 
-	
-        ### The property P101 associates fields of work to persons
-        ?person_uri wdt:P101 ?object.
-        ?object rdfs:label ?objectLabel.
-        FILTER(LANG(?objectLabel) = 'en')
-}  
-GROUP BY ?object ?objectLabel 
+SELECT ?object ?objectLabel (COUNT(*) AS ?eff)
+WHERE {
+  {
+    SELECT DISTINCT ?person_uri
+    WHERE {
+      ?person_uri wdt:P31 wd:Q5;
+                  wdt:P569 ?birthDate.
+      BIND(REPLACE(STR(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
+      FILTER(xsd:integer(?year) >= 1801 && xsd:integer(?year) <= 1990)
+
+      { ?person_uri wdt:P106 wd:Q2306091 }   # sociologist
+      UNION
+      { ?person_uri wdt:P101 wd:Q21201 }     # sociology
+    }
+  }
+
+  ?person_uri wdt:P101 ?object.
+  ?object rdfs:label ?objectLabel.
+  FILTER(LANG(?objectLabel) = "en")
+}
+GROUP BY ?object ?objectLabel
 ORDER BY DESC(?eff)
 LIMIT 100
 ```
@@ -44,35 +38,35 @@ LIMIT 100
 
 ### Most frequent fields of work
 
-| object                                    | objectLabel                       | eff  |
-| ----------------------------------------- | --------------------------------- | ---- |
-| http://www.wikidata.org/entity/Q413       | physics                           | 4346 |
-| http://www.wikidata.org/entity/Q333       | astronomy                         | 1684 |
-| http://www.wikidata.org/entity/Q395       | mathematics                       | 880  |
-| http://www.wikidata.org/entity/Q18362     | theoretical physics               | 760  |
-| http://www.wikidata.org/entity/Q37547     | astrophysics                      | 668  |
-| http://www.wikidata.org/entity/Q81197     | nuclear physics                   | 489  |
-| http://www.wikidata.org/entity/Q18334     | particle physics                  | 317  |
-| http://www.wikidata.org/entity/Q2329      | chemistry                         | 236  |
-| http://www.wikidata.org/entity/Q14620     | optics                            | 226  |
-| http://www.wikidata.org/entity/Q156495    | mathematical physics              | 225  |
-| http://www.wikidata.org/entity/Q715396    | solid-state physics               | 224  |
-| http://www.wikidata.org/entity/Q214781    | condensed matter physics          | 183  |
-| http://www.wikidata.org/entity/Q41217     | mechanics                         | 183  |
-| http://www.wikidata.org/entity/Q18366     | experimental physics              | 171  |
-| http://www.wikidata.org/entity/Q11372     | physical chemistry                | 164  |
-| http://www.wikidata.org/entity/Q944       | quantum mechanics                 | 164  |
-| http://www.wikidata.org/entity/Q338       | cosmology                         | 155  |
-| http://www.wikidata.org/entity/Q5615097   | plasma physics                    | 154  |
-| http://www.wikidata.org/entity/Q43035     | electrical engineering            | 153  |
-| http://www.wikidata.org/entity/Q169470    | physicist                         | 143  |
-| http://www.wikidata.org/entity/Q7100      | biophysics                        | 134  |
-| http://www.wikidata.org/entity/Q1144457   | quantum physics                   | 132  |
-| http://www.wikidata.org/entity/Q46255     | geophysics                        | 126  |
-| http://www.wikidata.org/entity/Q483666    | spectroscopy                      | 116  |
-| http://www.wikidata.org/entity/Q25261     | meteorology                       | 108  |
-| http://www.wikidata.org/entity/Q5891      | philosophy                        | 102  |
-| http://www.wikidata.org/entity/Q26383     | atomic physics                    | 100  |
+|object                                   |objectLabel                      |eff |
+|-----------------------------------------|---------------------------------|----|
+|http://www.wikidata.org/entity/Q21201    |sociology                        |4645|
+|http://www.wikidata.org/entity/Q36442    |political science                |528 |
+|http://www.wikidata.org/entity/Q5891     |philosophy                       |415 |
+|http://www.wikidata.org/entity/Q461659   |sociology of religion            |300 |
+|http://www.wikidata.org/entity/Q309      |history                          |295 |
+|http://www.wikidata.org/entity/Q1662673  |gender studies                   |233 |
+|http://www.wikidata.org/entity/Q8134     |economics                        |233 |
+|http://www.wikidata.org/entity/Q1570681  |sociology of culture             |213 |
+|http://www.wikidata.org/entity/Q23404    |anthropology                     |200 |
+|http://www.wikidata.org/entity/Q9418     |psychology                       |173 |
+|http://www.wikidata.org/entity/Q11030    |journalism                       |169 |
+|http://www.wikidata.org/entity/Q828395   |social policy                    |168 |
+|http://www.wikidata.org/entity/Q745692   |political sociology              |163 |
+|http://www.wikidata.org/entity/Q7163     |politics                         |157 |
+|http://www.wikidata.org/entity/Q12336277 |social research                  |155 |
+|http://www.wikidata.org/entity/Q48277    |gender                           |149 |
+|http://www.wikidata.org/entity/Q161733   |criminology                      |139 |
+|http://www.wikidata.org/entity/Q156035   |opinion journalism               |133 |
+|http://www.wikidata.org/entity/Q161272   |social psychology                |132 |
+|http://www.wikidata.org/entity/Q7922     |pedagogy                         |131 |
+|http://www.wikidata.org/entity/Q34749    |social science                   |129 |
+|http://www.wikidata.org/entity/Q8434     |education                        |127 |
+|http://www.wikidata.org/entity/Q7748     |law                              |119 |
+|http://www.wikidata.org/entity/Q205398   |social work                      |109 |
+|http://www.wikidata.org/entity/Q5431887  |social inequality                |106 |
+|http://www.wikidata.org/entity/Q597680   |urban sociology                  |105 |
+|http://www.wikidata.org/entity/Q7252     |feminism                         |103 |
 
 &nbsp;
 
