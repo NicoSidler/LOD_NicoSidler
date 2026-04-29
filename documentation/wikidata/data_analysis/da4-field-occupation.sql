@@ -100,7 +100,7 @@ fk_person INTEGER,
 notes TEXT);
 
 -- add column and create 1 to 1 relationship
---INSERT INTO person_features (person_uri, fk_person)
+INSERT INTO person_features (person_uri, fk_person)
 select wikidata_uri, pk_person 
 from person ;
 
@@ -127,63 +127,15 @@ order by num desc;
 
 
 
--- empty column if errors and restart
---UPDATE person_features
-SET occupation_main = NULL;
 
-/*
- * Treat first main occupations
- * 
- * note that this data was collected using occupations and fields
- * those that do not have an occupation as astronomer of physicist
- * have a correspondent field: astronomy or physics
- * 
- */
 
 -- Astronomers
 
--- verify that per person only one row with value 'astronomer'
--- result must be empty
-select io.person_uri
-from import_occupations io 
-where io.occupation_label = 'astronomer'
-group by io.person_uri 
-having count(*) > 1;
 
 
--- set the value astronomer if astronomer as occupation
-update person_features
-SET occupation_main = 'astronomer'
-FROM import_occupations io 
-WHERE io.person_uri = person_features.person_uri
-AND io.occupation_label = 'astronomer';
-
--- Physicists
 
 
--- verify that per person only one row with value 'physicist'
--- result must be empty
-select io.person_uri
-from import_occupations io 
-where io.occupation_label = 'physicist'
-group by io.person_uri 
-having count(*) > 1;
 
-
-update person_features
-SET occupation_main = 'physicist'
-FROM import_occupations io 
-WHERE io.person_uri = person_features.person_uri
--- do not delete the 'astronomer' already added values
-AND person_features.occupation_main IS NULL
-AND io.occupation_label = 'physicist';
-
-
--- NA : missing main occupation
--- only specific ones
-update person_features
-SET occupation_main = 'NA'
-WHERE person_features.occupation_main IS NULL;
 
 
 
@@ -216,7 +168,7 @@ CREATE TEMP TABLE temp_global_stats AS
 SELECT occupation_label, COUNT(*) as global_count
 FROM import_occupations
 -- we exclude the main occupations
-WHERE occupation_label NOT IN ('physicist', 'astronomer')
+WHERE occupation_label NOT IN ('sociologist')
 GROUP BY occupation_label;
 
 
@@ -254,7 +206,6 @@ SET occupation_sec1 = (
     JOIN temp_global_stats AS stats 
       ON o_inner.occupation_label = stats.occupation_label
     WHERE o_inner.person_uri = pf.person_uri
-    AND o_inner.occupation_label != pf.occupation_main
     ORDER BY stats.global_count DESC, o_inner.occupation_label ASC
     LIMIT 1
 )
@@ -266,7 +217,6 @@ EXISTS (
       ON o_check.occupation_label = s_check.occupation_label
     WHERE o_check.person_uri = pf.person_uri
 );
-
 
 
 --verify update
@@ -825,5 +775,4 @@ limit 100;
 -- export to fils da4_
 select *
 from person_features;
-
 
