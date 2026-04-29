@@ -428,7 +428,7 @@ SELECT field_label, count(*) as num
 FROM (
 	SELECT DISTINCT person_uri, field_label
 	FROM import_fields
-	where field_label not in ('physics', 'astronomy')
+	where field_label not in ('sociology')
 )
 GROUP BY field_label
 order by num desc;	
@@ -475,14 +475,14 @@ SET field_main = NULL;
 
 
 
--- Astronomers
+-- Astronomers (dont do)
 update person_features
 SET field_main = 'astronomy'
 FROM import_fields io 
 WHERE io.person_uri = person_features.person_uri
 AND io.field_label = 'astronomy';
 
--- Physicists
+-- Physicists (dont do)
 update person_features
 SET field_main = 'physics'
 FROM import_fields io 
@@ -515,7 +515,7 @@ DROP TABLE temp_global_field_stats ;
 CREATE TEMP TABLE temp_global_field_stats AS
 SELECT field_label, COUNT(*) as global_count
 FROM import_fields
-WHERE field_label NOT IN ('physics', 'astronomy')
+-- WHERE field_label NOT IN ('physics', 'astronomy')
 GROUP BY field_label;
 
 -- Optional: Create an index to speed up the JOIN later
@@ -653,7 +653,7 @@ order by num desc;
 
 
 /*
- * Explore coded fields
+ * Explore coded fields (done until here 04.29 11:45)
  */
 
 select *
@@ -775,4 +775,3 @@ limit 100;
 -- export to fils da4_
 select *
 from person_features;
-
