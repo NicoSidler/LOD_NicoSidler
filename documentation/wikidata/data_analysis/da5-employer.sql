@@ -20,11 +20,15 @@ ORDER BY num DESC;
 
 -- add manually two new columns of type 'text' to table: import_organisations_classes
 -- standard_label, coded_class
+ALTER TABLE import_organisations_classes
+ADD COLUMN standard_label TEXT;
+
+ALTER TABLE import_organisations_classes
+ADD COLUMN coded_class TEXT;
 
 
 -- trim and clean up data
 UPDATE import_organisations_classes set standard_label = replace(trim(lower(organisation_class_label)), ' ', '-');
-
 
 -- count again
 SELECT ioc.standard_label, count(*)as num
@@ -169,7 +173,7 @@ ORDER BY coded_class;
 -- inspect organisations and classes
 SELECT ipe.person_uri, io.organisation_label, ioc.coded_class
 FROM import_person_employer ipe,
-	import_organisations io, 
+	import_organisation io, 
 	import_organisations_classes ioc 
 WHERE ioc.organisation_uri = ipe.employer_uri 
 AND io.organisation_uri = ipe.employer_uri
@@ -246,13 +250,16 @@ LIMIT 50;
 -- Step 1: Create a Temporary Table with Global Counts
 -- Run this once. It calculates the rankings a single time.
 
-DROP TABLE temp_employer_stats ;
+DROP TABLE IF EXISTS temp_employer_stats;
+
 CREATE TEMP TABLE temp_employer_stats AS
-SELECT coded_class, COUNT(*) as global_count
-FROM import_person_employer ipe,
-	import_organisations_classes ioc 
-WHERE ioc.organisation_uri = ipe.employer_uri 
-GROUP BY coded_class
+SELECT 
+    ioc.coded_class, 
+    COUNT(*) AS global_count
+FROM import_person_employer AS ipe
+JOIN import_organisations_classes AS ioc 
+    ON ioc.organisation_uri = ipe.employer_uri
+GROUP BY ioc.coded_class
 ORDER BY ioc.coded_class ASC;
 
 --verify content
@@ -350,13 +357,15 @@ SELECT
 GROUP BY code_o	;
 
 
-DROP TABLE temp_employer_1 ;
-CREATE TEMP TABLE temp_employer_1 AS
-select employer_1 , count(*) as num
-from person_features
-group by employer_1
-order by num desc;
+DROP TABLE IF EXISTS temp_employer_1;
 
+CREATE TEMP TABLE temp_employer_1 AS
+SELECT 
+    employer_1, 
+    COUNT(*) AS num
+FROM person_features
+GROUP BY employer_1
+ORDER BY num DESC;
 
 --verify inspect employer_1
 select employer_1 , count(*) as num
@@ -439,12 +448,15 @@ SELECT
 GROUP BY code_o	;
 
 
-DROP TABLE temp_employer_2 ;
+DROP TABLE IF EXISTS temp_employer_2;
+
 CREATE TEMP TABLE temp_employer_2 AS
-select employer_2 , count(*) as num
-from person_features
-group by employer_2
-order by num desc;
+SELECT 
+    employer_2, 
+    COUNT(*) AS num
+FROM person_features
+GROUP BY employer_2
+ORDER BY num DESC;
 
 
 -- inspect employer where number less than 50
@@ -551,34 +563,54 @@ order by num desc;
  * 
  */
 
-
-select *
-from person_features 
+-- Check example rows
+SELECT *
+FROM person_features 
 WHERE occupation_sec1 != 'NA'
-AND coded_employer is not NULL
-limit 10;
+  AND occupation_sec1 IS NOT NULL
+  AND coded_employer IS NOT NULL
+LIMIT 10;
 
--- 10900 persons
-select COUNT(*) as num
-from person_features 
+
+-- Count values of occupation_sec1 among persons with coded employer
+SELECT 
+    occupation_sec1,
+    COUNT(*) AS num
+FROM person_features
 WHERE occupation_sec1 != 'NA'
-AND occupation_main != 'NA'
-AND coded_employer is not NULL;
+  AND occupation_sec1 IS NOT NULL
+  AND coded_employer IS NOT NULL
+GROUP BY occupation_sec1
+ORDER BY num DESC;
 
 
-select occupation_sec1, COUNT(*) as num
-from person_features 
-WHERE occupation_main == 'NA'
-group by occupation_sec1 
-order by num desc;
-
-
-
--- final query to be exported to file: da5-persons-features.csv
-SELECT pk_person_features, person_uri, occupation_main, occupation_sec1, coded_employer
-from person_features 
+-- Count final number of persons
+SELECT COUNT(*) AS num
+FROM person_features 
 WHERE occupation_sec1 != 'NA'
-AND occupation_main != 'NA'
-AND coded_employer is not NULL;
-limit 100;
+  AND occupation_sec1 IS NOT NULL
+  AND coded_employer IS NOT NULL;
 
+
+-- Optional: check rows where occupation_sec1 is missing or NA
+SELECT 
+    occupation_sec1, 
+    COUNT(*) AS num
+FROM person_features 
+WHERE occupation_sec1 IS NULL
+   OR occupation_sec1 = 'NA'
+GROUP BY occupation_sec1
+ORDER BY num DESC;
+
+
+-- Final query to be exported to file: da5-persons-features.csv
+SELECT 
+    pk_person_features, 
+    person_uri, 
+    occupation_sec1, 
+    coded_employer
+FROM person_features 
+WHERE occupation_sec1 != 'NA'
+  AND occupation_sec1 IS NOT NULL
+  AND coded_employer IS NOT NULL;
+-- LIMIT 100;
