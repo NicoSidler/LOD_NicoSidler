@@ -12,31 +12,35 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT ?person_uri ?employer_uri
-WHERE
+WHERE {
+    ### Subquery: define your population first
     {
-    ### subquery adding the distinct clause
-        {
         SELECT DISTINCT ?person_uri
         WHERE {
-        ?person_uri wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
-            UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413}  
+            ?person_uri wdt:P31 wd:Q5;      # human
+                        wdt:P569 ?birthDate.
+
+            BIND(YEAR(?birthDate) AS ?year)
+
+            FILTER(?year > 1800 && ?year < 1981)
+
+            {
+                ?person_uri wdt:P106 wd:Q2306091.  # occupation: sociologist
             }
-        } 
-		
-      ?person_uri wdt:P108 ?employer_uri.
-}  
+            UNION
+            {
+                ?person_uri wdt:P101 wd:Q21201.    # field of work: sociology
+            }
+        }
+    }
+
+    ### Add employer information
+    ?person_uri wdt:P108 ?employer_uri.
+}
 ORDER BY ?person_uri
-# LIMIT 30
+# LIMIT 30
 ```
 * execute the query on Wikidata or [QLever](https://qlever.dev/wikidata)
 * download the result as a CSV file
@@ -52,31 +56,38 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
 SELECT DISTINCT ?organisation_uri ?organisation_label 
-WHERE
+WHERE {
+    ### Subquery: define your population
     {
-    ### subquery adding the distinct clause
-        {
         SELECT DISTINCT ?person_uri
         WHERE {
-        ?person_uri wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
-            UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413}  
+            ?person_uri wdt:P31 wd:Q5;      # human
+                        wdt:P569 ?birthDate.
+
+            BIND(YEAR(?birthDate) AS ?year)
+
+            FILTER(?year > 1800 && ?year < 1981)
+
+            {
+                ?person_uri wdt:P106 wd:Q2306091.  # occupation: sociologist
             }
-        } 
+            UNION
+            {
+                ?person_uri wdt:P101 wd:Q21201.    # field of work: sociology
+            }
+        }
+    } 
 		
-        ?person_uri wdt:P108 ?organisation_uri.
-        ?organisation_uri rdfs:label ?organisation_label.
-        FILTER(LANG(?organisation_label) = 'en')
+    ### Get employers / organisations
+    ?person_uri wdt:P108 ?organisation_uri.
+
+    ### Get English organisation labels
+    ?organisation_uri rdfs:label ?organisation_label.
+    FILTER(LANG(?organisation_label) = "en")
 }  
+ORDER BY ?organisation_label
 # LIMIT 30
 ```
 * execute the query on Wikidata or [QLever](https://qlever.dev/wikidata)
@@ -171,33 +182,41 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT DISTINCT ?organisation_uri  ?organisation_class_uri ?organisation_class_label
-WHERE
+
+SELECT DISTINCT ?organisation_uri ?organisation_class_uri ?organisation_class_label
+WHERE {
+    ### Subquery: define your population
     {
-    ### subquery adding the distinct clause
-        {
         SELECT DISTINCT ?person_uri
         WHERE {
-        ?person_uri wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?person_uri wdt:P106 wd:Q11063}
-            UNION
-            {?person_uri wdt:P101 wd:Q333} 
-            UNION
-            {?person_uri wdt:P106 wd:Q169470}
-            UNION
-            {?person_uri wdt:P101 wd:Q413}  
-            }
-        } 
-		
-        ?person_uri wdt:P108 ?organisation_uri.
-        ?organisation_uri wdt:P31 ?organisation_class_uri.
-        ?organisation_class_uri rdfs:label ?organisation_class_label.
-        FILTER(LANG(?organisation_class_label) = 'en')
+            ?person_uri wdt:P31 wd:Q5;      # human
+                        wdt:P569 ?birthDate.
 
+            BIND(YEAR(?birthDate) AS ?year)
+
+            FILTER(?year > 1800 && ?year < 1981)
+
+            {
+                ?person_uri wdt:P106 wd:Q2306091.  # occupation: sociologist
+            }
+            UNION
+            {
+                ?person_uri wdt:P101 wd:Q21201.    # field of work: sociology
+            }
+        }
+    } 
+		
+    ### Get employers / organisations
+    ?person_uri wdt:P108 ?organisation_uri.
+
+    ### Get organisation classes
+    ?organisation_uri wdt:P31 ?organisation_class_uri.
+
+    ### Get English labels of organisation classes
+    ?organisation_class_uri rdfs:label ?organisation_class_label.
+    FILTER(LANG(?organisation_class_label) = "en")
 }  
+ORDER BY ?organisation_uri ?organisation_class_label
 LIMIT 30
 ```
 * execute the query on Wikidata or [QLever](https://qlever.dev/wikidata)
@@ -245,37 +264,49 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-SELECT ?employer ?employerLabel ?classLabel (COUNT(*) as ?eff)
-WHERE
+
+SELECT ?employer ?employerLabel ?classLabel (COUNT(DISTINCT ?item) AS ?eff)
+WHERE {
+    ### Subquery: define your population
     {
-    ### subquery adding the distinct clause
-        {
         SELECT DISTINCT ?item
         WHERE {
-        ?item wdt:P31 wd:Q5; 
-              wdt:P569 ?birthDate.
-        BIND(REPLACE(str(?birthDate), "(.*)([0-9]{4})(.*)", "$2") AS ?year)
-        FILTER(xsd:integer(?year) > 1780 && xsd:integer(?year) < 1981)# Any instance of a human.
-            {?item wdt:P106 wd:Q11063}
-            UNION
-            {?item wdt:P101 wd:Q333} 
-            UNION
-            {?item wdt:P106 wd:Q169470}
-            UNION
-            {?item wdt:P101 wd:Q413}  
+            ?item wdt:P31 wd:Q5;      # human
+                  wdt:P569 ?birthDate.
+
+            BIND(YEAR(?birthDate) AS ?year)
+
+            FILTER(?year > 1800 && ?year < 1981)
+
+            {
+                ?item wdt:P106 wd:Q2306091.  # occupation: sociologist
             }
-        } 
+            UNION
+            {
+                ?item wdt:P101 wd:Q21201.    # field of work: sociology
+            }
+        }
+    } 
 		
-      ?item wdt:P108 ?employer.
-        ?employer rdfs:label ?employerLabel.
-        FILTER(LANG(?employerLabel) = 'en')
-		?employer wdt:P31 ?class.
-        ?class rdfs:label ?classLabel.
-        FILTER(LANG(?classLabel) = 'en')
-		FILTER regex(?classLabel, '.*business.*|.*enterprise.*|.*company.*') 
+    ### Employer
+    ?item wdt:P108 ?employer.
+
+    ### Employer label
+    ?employer rdfs:label ?employerLabel.
+    FILTER(LANG(?employerLabel) = "en")
+
+    ### Employer class
+    ?employer wdt:P31 ?class.
+
+    ### Employer class label
+    ?class rdfs:label ?classLabel.
+    FILTER(LANG(?classLabel) = "en")
+
+    ### Keep only business / enterprise / company classes
+    FILTER(REGEX(?classLabel, "business|enterprise|company", "i"))
 }  
-GROUP BY ?employer ?employerLabel ?class ?classLabel 
-ORDER BY DESC(?eff) ?employer 
+GROUP BY ?employer ?employerLabel ?classLabel
+ORDER BY DESC(?eff) ?employerLabel
 LIMIT 20
 ```
 
