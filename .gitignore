@@ -1,1 +1,239 @@
 *.html
+
+## configuration !
+config.py
+
+# fichier de test 
+documentation/wikidata/data-production/test-fuseki.md
+documentation/wikidata/data-production/test-allegrograph.sparqlbook
+documentation/wikidata/data-production/noto-push-to-github.md
+
+notebooks_jupyter/wikidata_exploration/da4_AFC-test.ipynb
+
+
+# dossiers import csv
+/data/wdt_csv_data
+
+## database trop volumineuse pour GitHub
+# mettre en ligne un fichier zippé
+data/astronomers_import_before_202511.db
+
+data/data_analysis.db
+
+# les csv téléchargés ne seront plus versionnés
+DBPedia/exports_csv
+
+*.db
+
+*.gexf
+*.graphml
+
+*.pkl
+
+## fichiers provisoirement invisibles
+/notebooks_jupyter/dbpedia_exploration/dbp_merge_relations_interactif.ipynb
+/notebooks_jupyter/wikidata_exploration/wikidata_get_data_from_dbpedia_rdflib.ipynb
+
+weill-*
+
+## spatial data
+/notebooks_jupyter/geo_data/esri
+/notebooks_jupyter/geo_data/GADM
+/notebooks_jupyter/geo_data/world_bank
+/notebooks_jupyter/geo_data/natural_earth
+/notebooks_jupyter/geo_data
+
+
+# CSV non versionnés, sauf exceptions
+*.csv
+
+!/notebooks_jupyter/wikidata_exploration/da_data/*.csv
+
+!/Wikidata/wdt_persons_properties_20250309.csv
+!/Wikidata/wdt_organisations_properties_20250502.csv
+!/Wikidata/idref_books_properties_20250425.csv
+!/Wikidata/idref_persons_incoming_properties_20250425.csv
+
+# CSV non versionnés, sauf exceptions
+*.svg
+
+!/notebooks_jupyter/wikidata_exploration/images/biggest_egos_education_relationships_component_1851_1900.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_education_relationships_component_1851_1900.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_sliced_education_relationships_component_1851_1900.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_egos_education_relationships_component_1901_1920.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_sliced_education_relationships_component_1901_1920.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_education_relationships_component_test.svg
+!/notebooks_jupyter/wikidata_exploration/images/biggest_bipartite_component_test.svg
+!/notebooks_jupyter/wikidata_exploration/images/idref_smaller_betw.svg
+!/notebooks_jupyter/wikidata_exploration/images/idref_big_betw.svg
+!/notebooks_jupyter/wikidata_exploration/images/idref_big_betw_2.svg
+
+
+
+# HTML non versionnés, sauf exceptions
+*.html
+!/docs/*.html
+
+!/wiki_documentation/idRef/proprietes_population_entrantes.html
+!/notebooks_jupyter/wikidata_exploration/images/birth_places_choropleth.html
+!/notebooks_jupyter/wikidata_exploration/images/birth_places_points.html
+!/notebooks_jupyter/dbpedia_exploration/pictures/birth_years_20241208.html
+!/notebooks_jupyter/wikidata_exploration/interactive_images/naissances_distribution_10ans_genre_percent.html
+
+
+# JPG non versionnés, sauf exceptions
+*.jpg
+
+
+
+!/notebooks_jupyter/wikidata_exploration/doc_images/DatendimensionenImGIS.jpg
+
+# bases sqlite, sauf exceptions
+*.sqlite
+
+# docs ttl, sauf exception
+*.ttl
+
+# docs json, sauf exception
+*.json
+
+# docs rj, sauf exception
+*.rj
+
+# docs nt, sauf exception
+*.nt
+
+*.code-workspace
+.~lock.*
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+notebooks_jupyter/dbpedia_exploration/data/dbpedia_sparql_influences.csv
