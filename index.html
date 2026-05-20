@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sociologists</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #212529;
+            --primary-color: #0066cc;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
+            --link-color: #0056b3;
+            --link-hover: #003d82;
+        }
+
+        /* Basic Dark Mode support preference */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --text-color: #e0e0e0;
+                --primary-color: #66b2ff;
+                --card-bg: #1e1e1e;
+                --border-color: #333333;
+                --link-color: #80bdff;
+                --link-hover: #b3d7ff;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            padding-bottom: 0.3rem;
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); }
+        h2 { font-size: 1.6rem; margin-top: 2.5rem; border-bottom: 1px solid var(--border-color); }
+        h3 { font-size: 1.3rem; border-bottom: none; margin-top: 1.5rem; }
+        h4 { font-size: 1.1rem; border-bottom: none; margin-top: 2rem; color: var(--text-color); font-weight: 600; }
+
+        p, ul {
+            margin-bottom: 1.2rem;
+        }
+
+        li {
+            margin-bottom: 0.6rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .highlight-box {
+            background-color: rgba(0, 102, 204, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        code {
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            background-color: rgba(175, 184, 193, 0.2);
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sociologists</h1>
+
+    <div class="section-card">
+        <h2>Revised Research Questions</h2>
+        <ul>
+            <li><strong>RQ1 (Gender Distribution):</strong> How does the representation of sociologists in the dataset vary by gender across the entire network?</li>
+            <li><strong>RQ2 (Geographic & Generational Shift):</strong> What patterns emerge when analyzing the continents of birth for sociologists born within the 1801–1990 window, and how do these geographic trajectories differ between gender groups and specific birth cohorts?</li>
+            <li><strong>RQ3 (Structural Overlap):</strong> To what extent do the structural networks of education, employment, and institutional membership overlap for sociologists, and does this core intersection display significant variation based on gender?</li>
+            <li><strong>RQ4 (Institutional Pipelines):</strong> How do historical time periods/cohorts explain the variation in how sociologists move from their educational roots into specific employment sectors and professional memberships?</li>
+            <li><strong>RQ5 (Profiles of Centrality):</strong> Who are the most central actors (gatekeepers or bridges) within the employment and membership networks according to betweenness and degree centrality metrics?</li>
+            <li><strong>RQ6 (Gendered Capital):</strong> Do structural centrality scores reveal systemic differences between male and female sociologists, suggesting gendered advantages or barriers in institutional positioning?</li>
+            <li><strong>RQ7 (Sociological Tribes):</strong> What distinct network clusters or communities emerge when looking at shared educational backgrounds or workplace co-occurrence?</li>
+            <li><strong>RQ8 (Sub-community Profiles):</strong> What do these identified clusters tell us about the intellectual or institutional division of labor in sociology? For instance, are certain clusters dominated by specific gender groups, geographic regions, or generational cohorts?</li>
+        </ul>
+    </div>
+
+    <div class="section-card">
+        <h2>Findings & Analysis</h2>
+
+        <h3>RQ1: Gender Representation and Network Variation</h3>
+        <p>To fully answer the first research question, we must look at both the historical timeline of gender representation and how those demographics translate into structural network pipelines.</p>
+        
+        <h4>Part 1: Historical Distribution Over Time</h4>
+        <p>When tracking the demographic composition of sociologists within the dataset, a clear and highly pronounced trend emerges across the chronological timeline.</p>
+        
+        <div class="highlight-box">
+            <strong>Key Finding of Chart 1:</strong> This chart shows how the overall number of active sociologists and their gender balance have changed over time. The total number of people recorded grew steadily for decades, reaching its highest point between 1986 and 1995. However, the most important takeaway is the dramatic shift in gender representation: in the 1800s and early 1900s, the group was almost entirely male (represented by the blue bars). As time moves forward, the share of women (the red bars) consistently grows, finally reaching a nearly equal split of 46% female and 54% male in the most recent 2016–2025 period.
+        </div>
+
+        <ul>
+            <li>
+                <a href="file:///C:/Users/Nico%20Sidler/OneDrive%20-%20Universitaet%20Bern/Desktop/LODPresentation/HTMLFiles/naissances_distribution_10ans_genre_percent.html" target="_blank">
+                    📊 Interactive Chart: Gender Distribution by 10-Year Cohort
+                </a>
+            </li>
+        </ul>
+
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+
+        <h4>Part 2: Structural Clustering Differences</h4>
+
+        <p><strong>Demographic Totals</strong><br>
+        Looking at the dataset in aggregate, there is a severe historical imbalance in the absolute number of recorded nodes:</p>
+        <ul style="margin-top: 0;">
+            <li><strong>Male Sociologists/ Female Sociologists:</strong> 
+            <div style="overflow-x: auto; margin-top: 1rem; margin-bottom: 2rem;">
+    <table style="width: 100%; max-width: 400px; border-collapse: collapse; font-size: 0.9rem;">
+        <thead>
+            <tr style="background-color: rgba(0, 102, 204, 0.05); color: var(--primary-color); text-align: left;">
+                <th style="padding: 10px; border: 1px solid var(--border-color);">periodes</th>
+                <th style="padding: 10px; border: 1px solid var(--border-color);">m</th>
+                <th style="padding: 10px; border: 1px solid var(--border-color);">f</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px; border: 1px solid var(--border-color);"><strong>1926-1945</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">521</td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">70</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid var(--border-color);"><strong>1946-1965</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">924</td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">139</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid var(--border-color);"><strong>1966-1985</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">2792</td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">601</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid var(--border-color);"><strong>1986-2005</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">5229</td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">2090</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid var(--border-color);"><strong>2006-2025</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">2854</td>
+                <td style="padding: 10px; border: 1px solid var(--border-color);">2030</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </ul>
+
+        <div class="highlight-box">
+            <strong>Key Sociological Finding:</strong> While recorded female sociologists are a small part of the male population size, their network topology is also <strong>significantly less diverse</strong>. Female nodes do not spread out into a wide variety of network pipelines. Instead, women are heavily concentrated into just a few distinct clusters (Clusters 7, 8, and 9). This pattern suggests that historically, professional paths for women in sociology were much more rigid, restricting them to a few specific institutional pathways rather than the varied opportunities available in the male network.
+        </div>
+
+        <p>This lack of diversity is clear when looking at the numbers for the female cluster list. Once you move past the top three pipelines, the remaining professional communities become extremely small and fragmented.</p>
+        
+        <p><strong>Distribution of Female Clusters</strong></p>
+        <ul style="column-count: 2; list-style-type: none; padding-left: 0; margin-bottom: 2rem; margin-top: 0;">
+            <li>Cluster 7: 193</li>
+            <li>Cluster 8: 156</li>
+            <li>Cluster 9: 114</li>
+            <li>Cluster 15: 32</li>
+            <li>Cluster 5: 26</li>
+            <li>Cluster 3: 26</li>
+            <li>Cluster 2: 22</li>
+            <li>Cluster 22: 20</li>
+            <li>Cluster 1: 17</li>
+            <li>Cluster 30: 16</li>
+            <li>Cluster 28: 14</li>
+            <li>Cluster 4: 12</li>
+            <li>Cluster 0: 11</li>
+            <li>Cluster 31: 2</li>
+        </ul>
+		<li>
+    			<a href="file:///C:/Users/Nico%20Sidler/OneDrive%20-%20Universitaet%				20Bern/Desktop/LODPresentation/PNG/Clusters/20052026_Clusters4_7.png" target="_blank">
+        			🖼️ Static Image: Clusters 4 to 7
+   			 </a>
+		</li>
+        <p><strong>Dominant Male Institutional Clusters</strong><br>
+        Conversely, the male network is massive and highly fragmented into deep, distinct academic systems.</p>
+    </div>
+</div>
+
+</body>
+</html>
