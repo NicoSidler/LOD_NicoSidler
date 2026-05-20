@@ -5,7 +5,7 @@ Taking an exploratory approach, we aim to propose a simplified representation of
 
 ## Research questions
 * **RQ1 (Gender Distribution):** How does the representation of sociologists in the dataset vary by gender across the entire network?
-* **RQ2 (Geographic & Generational Shift):** What patterns emerge when analyzing the continents of birth for sociologists born within the 1800–1980 window, and how do these geographic trajectories differ between gender groups and specific birth cohorts (e.g., 1950s vs. 1970s)?
+* **RQ2 (Geographic & Generational Shift):** What patterns emerge when analyzing the continents of birth for sociologists born within the 1801–1990 window, and how do these geographic trajectories differ between gender groups and specific birth cohorts?
 * **RQ3 (Structural Overlap):** To what extent do the structural networks of education, employment, and institutional membership overlap for sociologists, and does this core intersection display significant variation based on gender?
 * **RQ4 (Institutional Pipelines):** How do historical time periods/cohorts explain the variation in how sociologists move from their educational roots into specific employment sectors and professional memberships?
 * **RQ5 (Profiles of Centrality):** Who are the most central actors (gatekeepers or bridges) within the employment and membership networks according to betweenness and degree centrality metrics?
