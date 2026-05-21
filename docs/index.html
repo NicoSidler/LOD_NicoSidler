@@ -437,13 +437,18 @@
         </li>
         </ul> 
         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
-           <h4>Part 2: Individuals </h4>
-        <p> If a person has a high number of education records on Wikidata, do they also tend to have a high number of employment or membership records? For this, I use Spearman that ignores the raw numbers and looks at rankings (who has the most, who has the second most, etc.), which protects the math from being distorted by outliers.</p>
+         <h4>Part 6: Beyond the Algorithm – Qualitative Context</h4>
+  <p>Quantitative metrics like Eigenvector Centrality are powerful tools for identifying structural hubs within a network. However, mathematical scores alone cannot explain the sociological realities behind these connections. Centrality analysis highlights <em>who</em> is structurally important, but we must examine the actual biographical trajectories to understand <em>why</em>. <a href="https://en.wikipedia.org/wiki/Tzvetan_Todorov" target="_blank" style="color: #0056b3; text-decoration: underline;">Tzvetan Todorov</a>, the individual with the highest eigenvector centrality in the dataset, serves as a prime example.</p>
         
-        <div class="highlight-box">
-            <strong>Key Statistical Finding:</strong> The Spearman rank correlation shows a statistically significant negative relationship between education, employment and membership counts. However, this correlation must be interpreted with extreme caution: because the vast majority of individuals in this dataset have an education count of exactly 1, the lack of variance in the predictor variable means these correlations likely reflect Wikidata's structural data-entry habits rather than a true sociological pattern.
- </div>
-          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">    
+  <div class="highlight-box">
+      <strong>Key Sociological Finding:</strong> Todorov's exceptional centrality—a metric measuring connections to other highly connected individuals—is driven by distinct biographical mechanisms rather than random chance:
+      <ul style="margin-top: 0.5rem; margin-bottom: 0; padding-left: 1.5rem; line-height: 1.6;">
+          <li><strong>Institutional Hubs:</strong> Moving from Bulgaria to Paris in 1963 placed him at the absolute center of European intellectual life, anchored by lifelong affiliations with elite research institutions like the CNRS and EHESS.</li>
+          <li><strong>High-Capital Networks:</strong> Direct mentorship by Roland Barthes and co-founding the journal <em>Poétique</em> with Gérard Genette instantly tethered him to the highest-centrality clusters of his era.</li>
+          <li><strong>Interdisciplinary Bridging:</strong> By publishing across literary theory, sociology, history, and philosophy, Todorov structurally bridged multiple academic pipelines that would otherwise have remained disconnected.</li>
+      </ul>
+  </div>
+  <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">  
         </div>
 
 </body>
