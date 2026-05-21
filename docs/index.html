@@ -111,10 +111,10 @@
             <li><strong>RQ1 (Gender Distribution):</strong> How does the representation of male and female sociologists change over time and across different geographic regions?</li>
             <li><strong>RQ2(Gendered Capital):</strong> How do network positions—such as career clusters and centrality—differ between men and women, and what does this reveal about gendered professional pathways?</li>
             <li><strong>RQ3 (Structural Overlap):</strong> To what extent do the structural networks of education, employment, and institutional membership overlap for sociologists?</li>
-            <li><strong>RQ5 (Institutional Pipelines):</strong> How do historical time periods/cohorts explain the variation in how sociologists move from their educational roots into specific employment sectors and professional memberships?</li>
-            <li><strong>RQ6 (Profiles of Centrality):</strong> Who are the most central actors (gatekeepers or bridges) within the employment and membership networks according to betweenness and degree centrality metrics? What is there to tell about those actors?</li
-            <li><strong>RQ7 (Sociological Tribes):</strong> What distinct network clusters or communities emerge when looking at shared educational backgrounds or workplace co-occurrence?</li>
-            <li><strong>RQ8 (Sub-community Profiles):</strong> What do these identified clusters tell us about the intellectual or institutional division of labor in sociology? For instance, are certain clusters dominated by specific gender groups, geographic regions, or generational cohorts?</li>
+            <li><strong>RQ4 (Institutional Pipelines):</strong> How do historical time periods/cohorts explain the variation in how sociologists move from their educational roots into specific employment sectors and professional memberships?</li>
+            <li><strong>RQ5 (Profiles of Centrality):</strong> Who are the most central actors (gatekeepers or bridges) within the employment and membership networks according to betweenness and degree centrality metrics? What is there to tell about those actors?</li
+            <li><strong>RQ6 (Sociological Tribes):</strong> What distinct network clusters or communities emerge when looking at shared educational backgrounds or workplace co-occurrence?</li>
+            <li><strong>RQ7 (Sub-community Profiles):</strong> What do these identified clusters tell us about the intellectual or institutional division of labor in sociology? For instance, are certain clusters dominated by specific gender groups, geographic regions, or generational cohorts?</li>
         </ul>
     </div>
 
@@ -402,10 +402,49 @@
         </tbody>
     </table>
  </div>
-          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">    
+ 
 
   <p> RQ4 cannot be answered with my data, as the Spearmean's Correlation analysis above suggests. The analysis with Spearmen did not really work, therefore making assumptions about pipelines is not possible with the analysis done.</p>
-</div>
+ <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">   
+
+            
+ <h3>RQ5: Profiles of Centrality</h3>
+        <p>To answer the third research question, we must look at the network analysis done in DA6 again.</p>
+        
+        <h4>Part 1:  Employment network: central hubs and structural bridges (DA6) </h4>
+        <p> The employment network shows two different types of centrality.First, some persons are highly central because they are connected to many other well-connected persons. This is measured by eigenvector centrality. Second, some persons are important because they connect otherwise more separate parts of the network. This is measured by betweenness centrality. </p>
+        
+        <div class="highlight-box">
+            <strong>Key Finding of Chart 1:</strong> In this network about eigenvector centrality, Tzvetan Todorov and Lloyd Ohlin have especially high eigenvector centrality. This means that they are located in dense and well-connected parts of the employment network.
+        </div>
+
+        <ul>
+            <li>
+                <a href="https://nicosidler.github.io/LOD_NicoSidler/21052026__EigenvectorEducation.png" target="_blank">
+                    📊 Chart 1: Eigenvector Centrality
+            </a>
+        </li>
+        </ul>
+<div class="highlight-box">
+            <strong>Key Finding of Chart 2:</strong> Emil Lederer and Yoshio Sugimoto have high betweenness centrality, even though their raw number of connections is much lower than that of the largest hubs.
+        </div>
+
+        <ul>
+            <li>
+                <a href="https://nicosidler.github.io/LOD_NicoSidler/21052026__BetweennessEducation.png" target="_blank">
+                    📊 Chart 2: Betweenness centrality
+            </a>
+        </li>
+        </ul> 
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+           <h4>Part 2: Individuals </h4>
+        <p> If a person has a high number of education records on Wikidata, do they also tend to have a high number of employment or membership records? For this, I use Spearman that ignores the raw numbers and looks at rankings (who has the most, who has the second most, etc.), which protects the math from being distorted by outliers.</p>
+        
+        <div class="highlight-box">
+            <strong>Key Statistical Finding:</strong> The Spearman rank correlation shows a statistically significant negative relationship between education, employment and membership counts. However, this correlation must be interpreted with extreme caution: because the vast majority of individuals in this dataset have an education count of exactly 1, the lack of variance in the predictor variable means these correlations likely reflect Wikidata's structural data-entry habits rather than a true sociological pattern.
+ </div>
+          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">    
+        </div>
 
 </body>
 </html>
