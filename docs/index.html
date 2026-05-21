@@ -342,7 +342,7 @@
         </ul>
 
         <h3>RQ3: Structural Overlap</h3>
-        <p>To answer the third research question, we must look at both the network analysis done in DA6.</p>
+        <p>To answer the third research question, we must look at the network analysis done in DA6.</p>
         
         <h4>Part 1: Macro Trends (DA6) </h4>
         <p>The dataset shows a strong increase in the absolute number of recorded organisational relationships across historical periods. The highest number appears in the period 1971–1995, with 6,516 total relationships. This is much higher than the previous period, 1946–1970, which contains 2,409 relationships.</p>
@@ -368,8 +368,41 @@
                     📊 Chart 2: Actual Number of Relations, Chi-Square, Cramer's V
             </a>
         </li>
-        </ul>
+        </ul> 
         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
+           <h4>Part 2: Internal Influence of Relations (DA6) </h4>
+        <p> If a person has a high number of education records on Wikidata, do they also tend to have a high number of employment or membership records? For this, I use Spearman that ignores the raw numbers and looks at rankings (who has the most, who has the second most, etc.), which protects the math from being distorted by outliers.</p>
+        
+        <div class="highlight-box">
+            <strong>Key Finding of Chart 1:</strong> The Spearman rank correlation shows a statistically significant negative relationship between education, employment and membership counts. However, this correlation must be interpreted with extreme caution: because the vast majority of individuals in this dataset have an education count of exactly 1, the lack of variance in the predictor variable means these correlations likely reflect Wikidata's structural data-entry habits rather than a true sociological pattern.
+<table style="width: 100%; border-collapse: collapse; margin-top: 1.5rem;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color);">
+                <th style="text-align: left; padding: 8px;">Variables Compared</th>
+                <th style="text-align: right; padding: 8px;">Spearman Correlation</th>
+                <th style="text-align: right; padding: 8px;">p-value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">Studies & Employment</td>
+                <td style="text-align: right; padding: 8px;">-0.2450</td>
+                <td style="text-align: right; padding: 8px;">0.0036</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 8px;">Studies & Membership</td>
+                <td style="text-align: right; padding: 8px;">-0.4543</td>
+                <td style="text-align: right; padding: 8px;">0.0000</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px;">Employment & Membership</td>
+                <td style="text-align: right; padding: 8px;">-0.6822</td>
+                <td style="text-align: right; padding: 8px;">0.0000</td>
+            </tr>
+        </tbody>
+    </table>
+     
+          <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">    
     </div>
 </div>
 
