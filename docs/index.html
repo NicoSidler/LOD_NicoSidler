@@ -122,7 +122,7 @@
         <h2>Findings & Analysis</h2>
 
         <h3>RQ1/RQ2: Gender Representation and Network Variation</h3>
-        <p>To answer the first two research question, we must look at both the historical timeline and geographical distribution of gender representation as well as how those demographics translate into structural network pipelines.</p>
+        <p>To answer the first two research question, we must look at both the historical timeline and geographical distribution of gender representation.</p>
         
         <h4>Part 1: Historical Distribution Over Time (DA1) </h4>
         <p>When tracking the demographic composition of sociologists within the dataset, a clear and highly pronounced trend emerges across the chronological timeline.</p>
@@ -141,7 +141,7 @@
 
         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2.5rem 0;">
     <h4>Part 2: Geographic Distribution (DA2) </h4>
-            <p>In the 1970s, sociology was heavily concentrated in Europe, for men as well as women. However, this is a period when female participation in the field was still quite low. </p>
+            <p>In the 1970s, sociology for females was heavily concentrated in Europe. However, this is a period when female participation in the field was still quite low. So when looking at data like this, I need to be careful to always keep the actual numbers in mind. </p>
             
             <ul>
                 <li>
@@ -154,7 +154,7 @@
         <h4>Part 3: Structural Clustering Differences(Da1, DA5) </h4>
 
         <p><strong>Demographic Totals</strong><br>
-        Looking at the dataset in aggregate, there is a severe historical imbalance in the absolute number of recorded nodes:</p>
+        Looking at the dataset in aggregate, there is a severe historical imbalance in the absolute number of recorded sociologist (female and male):</p>
         <ul style="margin-top: 0;">
             <li><strong>Male Sociologists/ Female Sociologists:</strong> 
             <div style="overflow-x: auto; margin-top: 1rem; margin-bottom: 2rem;">
@@ -198,9 +198,9 @@
         </ul>
 
         <div class="highlight-box">
-            <strong>Key Sociological Finding:</strong> Even when factoring in the smaller number of women in the dataset, their professional networks are far less diverse.
-A striking 70% of all female sociologists are packed into just three groups (Clusters 7, 8, and 9). In contrast, men are spread across a much wider variety of clusters.
-This proves that historical career paths for women were much more rigid, funneling them into a few specific institutional pipelines rather than the broad opportunities available to their male peers.
+            <strong>Key Sociological Finding (of clusters below):</strong> Even when factoring in the smaller number of women in the dataset, their professional networks are far less diverse.
+A striking  amount (about 70%) of all female sociologists are packed into just three groups (Clusters 7, 8, and 9). In contrast, men are spread across a much wider variety of clusters.
+This could show that historical career paths for women were much more rigid, funneling them into a few specific institutional pipelines rather than the broad opportunities available to their male peers. This is something that could be followed upon further!
         </div>
 
         <p>This lack of diversity is clear when looking at the numbers for the female cluster list. Once you move past the top three pipelines, the remaining professional communities become extremely small and fragmented.</p>
@@ -343,7 +343,7 @@ This proves that historical career paths for women were much more rigid, funneli
         </ul>
 
         <h3>RQ3/ RQ4: Structural Overlaps, Institutional Pipelines</h3>
-        <p>To answer the third research question, we must look at the network analysis done in DA6.</p>
+        <p>To answer the third and fourth research question, we must look at the network analysis done in DA6.</p>
         
         <h4>Part 1: Macro Trends (DA6) </h4>
         <p>The dataset shows a strong increase in the absolute number of recorded organisational relationships across historical periods. The highest number appears in the period 1971–1995, with 6,516 total relationships. This is much higher than the previous period, 1946–1970, which contains 2,409 relationships.</p>
@@ -375,7 +375,7 @@ This proves that historical career paths for women were much more rigid, funneli
         <p> If a person has a high number of education records on Wikidata, do they also tend to have a high number of employment or membership records? For this, I use Spearman that ignores the raw numbers and looks at rankings (who has the most, who has the second most, etc.), which protects the math from being distorted by outliers.</p>
         
         <div class="highlight-box">
-            <strong>Key Statistical Finding:</strong> The Spearman rank correlation shows a statistically significant negative relationship between education, employment and membership counts. However, this correlation must be interpreted with extreme caution: because the vast majority of individuals in this dataset have an education count of exactly 1, the lack of variance in the predictor variable means these correlations likely reflect Wikidata's structural data-entry habits rather than a true sociological pattern.
+            <strong>Key Statistical Finding:</strong> The Spearman rank correlation shows a statistically significant negative relationship between education, employment and membership counts. However, this correlation must be interpreted with extreme caution (it might even be mathematically invalid): because the vast majority of individuals in this dataset have an education count of exactly 1, the lack of variance in the predictor variable means these correlations likely reflect Wikidata's structural data-entry habits rather than a true sociological pattern.
             
 <table style="width: 100%; border-collapse: collapse; margin-top: 1.5rem;">
         <thead>
